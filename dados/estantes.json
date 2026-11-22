@@ -1,6 +1,137 @@
 {
   "estantes": [
     {
+      "id": "logica",
+      "nome": "Lógica de Programação",
+      "descricao": "Para quem nunca programou: do primeiro algoritmo até estruturas de dados.",
+      "livros": [
+        {
+          "degrau": 1,
+          "titulo": "Lógica de Programação",
+          "subtitulo": "Crie seus primeiros programas usando JavaScript e HTML",
+          "tituloOriginal": null,
+          "autores": [
+            "Paulo Silveira"
+          ],
+          "nivel": "iniciante",
+          "porque": "Autor brasileiro; o primeiro contato com programação só com navegador e editor de texto, criando programas desde o início.",
+          "edicaoPt": {
+            "status": "original"
+          },
+          "link": null,
+          "gratuito": false,
+          "cor": "#9B2C22"
+        },
+        {
+          "degrau": 2,
+          "titulo": "Introdução à Programação com Python, 4ª ed.",
+          "subtitulo": "Algoritmos e lógica de programação para iniciantes",
+          "tituloOriginal": null,
+          "autores": [
+            "Nilo Ney Coutinho Menezes"
+          ],
+          "nivel": "iniciante",
+          "porque": "Autor brasileiro; algoritmos e lógica para iniciantes com Python, uma linguagem simples de ler e escrever.",
+          "edicaoPt": {
+            "status": "original"
+          },
+          "link": null,
+          "gratuito": false,
+          "cor": "#24506B"
+        },
+        {
+          "degrau": 3,
+          "titulo": "Lógica de Programação, 4ª ed.",
+          "subtitulo": "A construção de algoritmos e estruturas de dados com aplicações em Python",
+          "tituloOriginal": null,
+          "autores": [
+            "André Luiz Villar Forbellone",
+            "Henri Frederico Eberspächer"
+          ],
+          "nivel": "iniciante",
+          "porque": "Clássico brasileiro das faculdades, agora com aplicações em Python: como pensar e montar algoritmos passo a passo.",
+          "edicaoPt": {
+            "status": "original"
+          },
+          "link": null,
+          "gratuito": false,
+          "cor": "#2E5A3A"
+        },
+        {
+          "degrau": 4,
+          "titulo": "Algoritmos",
+          "subtitulo": "Lógica para desenvolvimento de programação de computadores",
+          "tituloOriginal": null,
+          "autores": [
+            "José Augusto N. G. Manzano",
+            "Jayr Figueiredo de Oliveira"
+          ],
+          "nivel": "intermediario",
+          "porque": "Clássico brasileiro cheio de exercícios: decisões, laços, vetores e sub-rotinas para fixar a lógica.",
+          "edicaoPt": {
+            "status": "original"
+          },
+          "link": null,
+          "gratuito": false,
+          "cor": "#6A3C10"
+        },
+        {
+          "degrau": 5,
+          "titulo": "Pense em Python",
+          "tituloOriginal": "Think Python",
+          "autores": [
+            "Allen B. Downey"
+          ],
+          "nivel": "intermediario",
+          "porque": "Ensina a pensar como cientista da computação: decompor problemas e depurar; a 2ª ed. traduzida é gratuita online.",
+          "edicaoPt": {
+            "status": "sim",
+            "editora": "Novatec"
+          },
+          "link": "https://github.com/PenseAllen/PensePython2e",
+          "gratuito": true,
+          "cor": "#213A6B"
+        },
+        {
+          "degrau": 6,
+          "titulo": "Estruturas de Dados e Algoritmos com JavaScript, 2ª ed.",
+          "tituloOriginal": "Learning JavaScript Data Structures and Algorithms",
+          "autores": [
+            "Loiane Groner"
+          ],
+          "nivel": "avancado",
+          "porque": "Autora brasileira; arrays, pilhas, filas, listas, árvores e grafos implementados passo a passo.",
+          "edicaoPt": {
+            "status": "sim",
+            "editora": "Novatec"
+          },
+          "link": null,
+          "gratuito": false,
+          "cor": "#5B2A4A"
+        },
+        {
+          "degrau": 7,
+          "titulo": "Algoritmos: Teoria e Prática, 4ª ed.",
+          "tituloOriginal": "Introduction to Algorithms",
+          "autores": [
+            "Thomas H. Cormen",
+            "Charles E. Leiserson",
+            "Ronald L. Rivest",
+            "Clifford Stein"
+          ],
+          "nivel": "avancado",
+          "porque": "A referência das universidades em algoritmos; denso, para quem quer ir fundo na teoria.",
+          "edicaoPt": {
+            "status": "sim",
+            "editora": "GEN LTC"
+          },
+          "link": null,
+          "gratuito": false,
+          "cor": "#3B3B48"
+        }
+      ]
+    },
+    {
       "id": "java",
       "nome": "Java",
       "descricao": "Da primeira classe até a JVM em produção.",

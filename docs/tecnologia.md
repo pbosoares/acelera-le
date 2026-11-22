@@ -29,6 +29,7 @@ acelera-le/
 │   ├── tecnologia.md
 │   ├── nome.md
 │   └── estantes/
+│       ├── logica.md
 │       ├── java.md
 │       ├── python.md
 │       ├── javascript.md

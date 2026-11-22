@@ -10,6 +10,7 @@ Muita gente que está começando na programação não sabe o que ler. O **Acele
 
 | Estante | Arquivo |
 |---|---|
+| Lógica de Programação | [docs/estantes/logica.md](docs/estantes/logica.md) |
 | Java | [docs/estantes/java.md](docs/estantes/java.md) |
 | Python | [docs/estantes/python.md](docs/estantes/python.md) |
 | JavaScript / Front-end | [docs/estantes/javascript.md](docs/estantes/javascript.md) |
@@ -33,7 +34,7 @@ Próximas: [docs/estantes/proximas.md](docs/estantes/proximas.md)
 ## Status
 
 - [x] Nome definido
-- [x] Curadoria v2 das 9 estantes (maioria com edição em PT-BR)
+- [x] Curadoria v2 das 10 estantes (maioria com edição em PT-BR)
 - [ ] Conferir as edições em português marcadas como "confirmar"
 - [x] Protótipo navegável (abra o `index.html`)
 - [x] Publicado na Vercel: https://acelera-le.vercel.app/ (também no GitHub Pages: https://pbosoares.github.io/acelera-le/)

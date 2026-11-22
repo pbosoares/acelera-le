@@ -33,6 +33,16 @@ Abre um painel lateral no desktop e uma gaveta de baixo para cima no celular. Mo
 - Navegação ← anterior / próximo → dentro da estante
 - `Esc` ou clique fora fecha
 
+## Pesquisa
+
+- Campo de pesquisa acima dos chips: procura por título, subtítulo, título original, autor e no "por que está aqui", sem diferenciar acentos nem maiúsculas.
+- Nada muda de lugar: os livros que não batem ficam apagados, a estante com resultado acende e o chip dela ganha um pontinho; estantes sem resultado somem enquanto houver pesquisa.
+- `Esc` limpa a pesquisa.
+
+## Onde encontrar
+
+- O painel tem o botão "Buscar na Amazon", que abre uma busca por título e autor (sem link de afiliado e sem URL de produto inventada).
+
 ## Progresso
 
 - Cada prateleira mostra "**3/7 lidos**" com uma barrinha.
@@ -47,4 +57,4 @@ Abre um painel lateral no desktop e uma gaveta de baixo para cima no celular. Mo
 
 ## Fora do escopo do protótipo
 
-Login, comentários, avaliações por estrelas, busca e páginas individuais por livro. Ficam para depois, se fizer sentido.
+Login, comentários, avaliações por estrelas e páginas individuais por livro. Ficam para depois, se fizer sentido.

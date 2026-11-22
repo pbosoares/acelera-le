@@ -1040,6 +1040,133 @@ window.ACELERA_LE_DADOS = {
           "cor": "#7A2A3A"
         }
       ]
+    },
+    {
+      "id": "carreira",
+      "nome": "Carreira",
+      "descricao": "Do primeiro emprego até liderar times.",
+      "livros": [
+        {
+          "degrau": 1,
+          "titulo": "O Programador Apaixonado",
+          "subtitulo": "Construindo uma carreira notável em desenvolvimento de software",
+          "tituloOriginal": "The Passionate Programmer",
+          "autores": [
+            "Chad Fowler"
+          ],
+          "nivel": "iniciante",
+          "porque": "Como construir uma carreira notável em software: o que aprender, como se destacar e seguir evoluindo; leitura leve e não técnica.",
+          "edicaoPt": {
+            "status": "sim",
+            "editora": "Casa do Código"
+          },
+          "link": null,
+          "gratuito": false,
+          "cor": "#9B2C22"
+        },
+        {
+          "degrau": 2,
+          "titulo": "Soft Skills",
+          "subtitulo": "The Software Developer's Life Manual",
+          "tituloOriginal": null,
+          "autores": [
+            "John Sonmez"
+          ],
+          "nivel": "iniciante",
+          "porque": "O lado não técnico da carreira de dev: currículo, entrevistas, marketing pessoal, aprendizado e produtividade.",
+          "edicaoPt": {
+            "status": "nao"
+          },
+          "link": null,
+          "gratuito": false,
+          "cor": "#24506B"
+        },
+        {
+          "degrau": 3,
+          "titulo": "Cracking the Coding Interview, 6ª ed.",
+          "tituloOriginal": null,
+          "autores": [
+            "Gayle Laakmann McDowell"
+          ],
+          "nivel": "intermediario",
+          "porque": "A preparação clássica para entrevistas técnicas: 189 questões de programação resolvidas e como o processo funciona.",
+          "edicaoPt": {
+            "status": "nao"
+          },
+          "link": null,
+          "gratuito": false,
+          "cor": "#2E5A3A"
+        },
+        {
+          "degrau": 4,
+          "titulo": "Comunicação Não Violenta",
+          "tituloOriginal": "Nonviolent Communication",
+          "autores": [
+            "Marshall B. Rosenberg"
+          ],
+          "nivel": "intermediario",
+          "porque": "Falar com clareza e ouvir de verdade: ajuda em feedbacks, code reviews e conflitos no time.",
+          "edicaoPt": {
+            "status": "sim",
+            "editora": "Ágora"
+          },
+          "link": null,
+          "gratuito": false,
+          "cor": "#6A3C10"
+        },
+        {
+          "degrau": 5,
+          "titulo": "Trabalho Focado",
+          "subtitulo": "Como ter sucesso em um mundo distraído",
+          "tituloOriginal": "Deep Work",
+          "autores": [
+            "Cal Newport"
+          ],
+          "nivel": "intermediario",
+          "porque": "Como ganhar concentração profunda num mundo cheio de distrações; vale para estudar e para programar.",
+          "edicaoPt": {
+            "status": "sim",
+            "editora": "Alta Books"
+          },
+          "link": null,
+          "gratuito": false,
+          "cor": "#213A6B"
+        },
+        {
+          "degrau": 6,
+          "titulo": "O Codificador Limpo",
+          "subtitulo": "Um código de conduta para programadores profissionais",
+          "tituloOriginal": "The Clean Coder",
+          "autores": [
+            "Robert C. Martin"
+          ],
+          "nivel": "avancado",
+          "porque": "O que é ser um programador profissional: dizer não, estimar, lidar com pressão e assumir responsabilidade.",
+          "edicaoPt": {
+            "status": "sim",
+            "editora": "Alta Books"
+          },
+          "link": null,
+          "gratuito": false,
+          "cor": "#5B2A4A"
+        },
+        {
+          "degrau": 7,
+          "titulo": "The Manager's Path",
+          "tituloOriginal": null,
+          "autores": [
+            "Camille Fournier"
+          ],
+          "nivel": "avancado",
+          "porque": "Os degraus da carreira técnica e de liderança, de tech lead até CTO.",
+          "edicaoPt": {
+            "status": "nao"
+          },
+          "link": null,
+          "gratuito": false,
+          "cor": "#3B3B48"
+        }
+      ]
     }
   ]
 };

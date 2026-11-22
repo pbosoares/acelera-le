@@ -35,6 +35,7 @@ acelera-le/
 │       ├── ia.md
 │       ├── engenharia-de-software.md
 │       ├── banco-de-dados.md
+│       ├── carreira.md
 │       ├── devops.md
 │       ├── design-system.md
 │       └── proximas.md

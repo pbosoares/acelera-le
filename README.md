@@ -18,6 +18,7 @@ Muita gente que está começando na programação não sabe o que ler. O **Acele
 | Banco de Dados | [docs/estantes/banco-de-dados.md](docs/estantes/banco-de-dados.md) |
 | DevOps | [docs/estantes/devops.md](docs/estantes/devops.md) |
 | Design System | [docs/estantes/design-system.md](docs/estantes/design-system.md) |
+| Carreira | [docs/estantes/carreira.md](docs/estantes/carreira.md) |
 
 Próximas: [docs/estantes/proximas.md](docs/estantes/proximas.md)
 
@@ -32,7 +33,7 @@ Próximas: [docs/estantes/proximas.md](docs/estantes/proximas.md)
 ## Status
 
 - [x] Nome definido
-- [x] Curadoria v2 das 8 estantes (maioria com edição em PT-BR)
+- [x] Curadoria v2 das 9 estantes (maioria com edição em PT-BR)
 - [ ] Conferir as edições em português marcadas como "confirmar"
 - [x] Protótipo navegável (abra o `index.html`)
 - [x] Publicado na Vercel: https://acelera-le.vercel.app/ (também no GitHub Pages: https://pbosoares.github.io/acelera-le/)

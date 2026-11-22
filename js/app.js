@@ -9,7 +9,8 @@
    3) Carregar os dados
    4) Desenhar chips e estantes
    5) Painel de detalhes
-   5b) Pesquisa visual de livros
+   5b) Pesquisa visual de livros (e filtros)
+   5c) Copiar link da estante
    6) Sugerir livro e zerar progresso
    7) Começo de tudo
    ========================================================= */
@@ -193,6 +194,13 @@ function desenharEstantes() {
     const achados = criar("span", "estante__achados");
     achados.hidden = true;
     progresso.append(achados, contagem, barra);
+
+    // Botão para copiar o link direto desta estante (ex.: .../#python)
+    const copiar = criar("button", "botao-copiar", "🔗 Copiar link");
+    copiar.type = "button";
+    copiar.setAttribute("aria-label", `Copiar link da estante ${estante.nome}`);
+    copiar.addEventListener("click", () => copiarLinkEstante(estante, copiar));
+    textos.append(copiar);
 
     cabecalho.append(textos, progresso);
 
@@ -431,18 +439,37 @@ function textoPesquisavel(livro) {
   return normalizar(partes.filter(Boolean).join(" "));
 }
 
+// Filtros ligados/desligados pelos botões "Só em português" e "Só gratuitos"
+const filtros = { pt: false, gratis: false };
+
+// Tem edição em português confirmada? ("confirmar" ainda não conta)
+function temEdicaoPt(livro) {
+  return livro.edicaoPt.status === "sim" || livro.edicaoPt.status === "original";
+}
+
+// O livro passa nos filtros ligados?
+function passaNosFiltros(livro) {
+  if (filtros.pt && !temEdicaoPt(livro)) return false;
+  if (filtros.gratis && !livro.gratuito) return false;
+  return true;
+}
+
 function aplicarBusca() {
   const campo = $("busca");
   if (!campo || estantes.length === 0) return;
 
   // Cada palavra digitada precisa aparecer no livro (ordem não importa)
   const termos = normalizar(campo.value).split(/\s+/).filter(Boolean);
-  const pesquisando = termos.length > 0;
+  // "Pesquisando" = tem texto digitado OU algum filtro ligado
+  const pesquisando = termos.length > 0 || filtros.pt || filtros.gratis;
   const achadosPorEstante = estantes.map(() => 0);
 
   estantes.forEach((estante, indice) => {
     for (const livro of estante.livros) {
-      const bate = pesquisando && termos.every((termo) => textoPesquisavel(livro).includes(termo));
+      const bate =
+        pesquisando &&
+        passaNosFiltros(livro) &&
+        termos.every((termo) => textoPesquisavel(livro).includes(termo));
       document
         .querySelector(`[data-id="${idDoLivro(estante, livro)}"]`)
         .classList.toggle("lombada--apagada", pesquisando && !bate);
@@ -489,6 +516,16 @@ function aplicarBusca() {
 function prepararBusca() {
   const campo = $("busca");
   campo.addEventListener("input", aplicarBusca);
+
+  // Botões de filtro: cada clique liga/desliga e refaz a pesquisa
+  for (const [id, chave] of [["filtro-pt", "pt"], ["filtro-gratis", "gratis"]]) {
+    const botao = $(id);
+    botao.addEventListener("click", () => {
+      filtros[chave] = !filtros[chave];
+      botao.setAttribute("aria-pressed", String(filtros[chave]));
+      aplicarBusca();
+    });
+  }
   // Esc limpa a pesquisa (alguns navegadores já fazem isso sozinhos)
   campo.addEventListener("keydown", (evento) => {
     if (evento.key === "Escape" && campo.value) {
@@ -496,6 +533,46 @@ function prepararBusca() {
       aplicarBusca();
     }
   });
+}
+
+// ---------- 5c) Copiar link da estante ----------
+
+// Link direto para a estante: o mesmo endereço do site + "#id"
+function linkDaEstante(estante) {
+  return `${location.origin}${location.pathname}#${estante.id}`;
+}
+
+async function copiarLinkEstante(estante, botao) {
+  const link = linkDaEstante(estante);
+  let copiou = false;
+  try {
+    await navigator.clipboard.writeText(link);
+    copiou = true;
+  } catch (erro) {
+    // Sem permissão para a área de transferência (ou site aberto via file://):
+    // tentamos o jeito antigo, com um campo de texto temporário.
+    const campo = document.createElement("textarea");
+    campo.value = link;
+    campo.setAttribute("readonly", "");
+    campo.style.position = "fixed";
+    campo.style.opacity = "0";
+    document.body.append(campo);
+    campo.select();
+    try { copiou = document.execCommand("copy"); } catch (e) { copiou = false; }
+    campo.remove();
+  }
+
+  // Retorno visual por 2 segundos e aviso para leitor de tela
+  const textoOriginal = "🔗 Copiar link";
+  botao.textContent = copiou ? "✓ Link copiado!" : link;
+  botao.classList.toggle("botao-copiar--ok", copiou);
+  botao.classList.toggle("botao-copiar--link", !copiou); // link visível, sem caixa alta
+  avisar(copiou ? `Link da estante ${estante.nome} copiado.` : `Copie o link: ${link}`);
+  clearTimeout(botao._timer);
+  botao._timer = setTimeout(() => {
+    botao.textContent = textoOriginal;
+    botao.classList.remove("botao-copiar--ok", "botao-copiar--link");
+  }, copiou ? 2000 : 6000);
 }
 
 // ---------- 6) Sugerir livro e zerar progresso ----------

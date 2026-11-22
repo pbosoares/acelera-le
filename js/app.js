@@ -137,9 +137,14 @@ function desenharLombada(estante, livro, total) {
   botao.type = "button";
   botao.dataset.id = id;
   botao.style.setProperty("--cor", livro.cor);
-  // Altura entre 290px e 340px; títulos longos ganham lombada mais grossa
+  // Altura entre 290px e 340px. Com o título na horizontal, a lombada precisa
+  // de largura para ler: entre 106px e 127px (títulos longos ganham a mais grossa).
   botao.style.setProperty("--altura", `${290 + (n % 51)}px`);
-  botao.style.setProperty("--largura", `${(livro.titulo.length > 26 ? 100 : 86) + (n % 10)}px`);
+  botao.style.setProperty("--largura", `${(livro.titulo.length > 26 ? 118 : 106) + (n % 10)}px`);
+  // Título com palavra muito longa ("Acessibilidade") usa letra um pouco menor,
+  // para a palavra caber inteira na largura da lombada
+  const maiorPalavra = Math.max(...livro.titulo.split(/\s+/).map((palavra) => palavra.length));
+  if (maiorPalavra >= 11) botao.classList.add("lombada--titulo-compacto");
 
   // Partes visuais (o leitor de tela usa o aria-label, mais abaixo)
   const fita = criar("span", "lombada__fita");
@@ -148,16 +153,98 @@ function desenharLombada(estante, livro, total) {
   const autor = criar("span", "lombada__autor", juntarAutores(livro.autores));
   const check = criar("span", "lombada__check", "✓");
   const nivel = criar("span", "lombada__nivel");
-  for (const parte of [fita, degrau, titulo, autor, check, nivel]) {
+  const capa = desenharCapa(livro, total);
+  for (const parte of [fita, degrau, titulo, autor, check, nivel, capa]) {
     parte.setAttribute("aria-hidden", "true");
   }
-  botao.append(fita, degrau, titulo, autor, check, nivel);
+  botao.append(fita, degrau, titulo, autor, check, nivel, capa);
 
-  botao.addEventListener("click", () => abrirPainel(estante, livro, botao));
+  // Antes de a capa abrir (mouse ou teclado), decide para que lado ela cabe
+  botao.addEventListener("pointerenter", () => definirLadoDaCapa(botao));
+  botao.addEventListener("focus", () => definirLadoDaCapa(botao));
+  botao.addEventListener("pointerdown", (evento) => { ultimoPonteiro = evento.pointerType; });
+
+  botao.addEventListener("click", () => {
+    // No celular: o 1º toque abre a capa para ler o título; o 2º abre os detalhes
+    if (ultimoPonteiro === "touch" && !botao.classList.contains("lombada--aberta")) {
+      abrirCapa(botao);
+      return;
+    }
+    abrirPainel(estante, livro, botao);
+  });
 
   atualizarLombada(botao, estante, livro, total);
   return botao;
 }
+
+// ---- Capa 3D ----
+
+// Última forma de interação: "mouse", "touch" (toque) ou "pen"
+let ultimoPonteiro = "mouse";
+
+// Monta a capa desenhada em CSS (nível, título, subtítulo, autor e faixa de nível)
+function desenharCapa(livro, total) {
+  const capa = criar("span", "lombada__capa");
+  capa.append(
+    criar("span", "capa__nivel", `Degrau ${livro.degrau} de ${total} · ${NOMES_NIVEL[livro.nivel]}`),
+    criar("span", "capa__titulo", livro.titulo)
+  );
+  if (livro.subtitulo) capa.append(criar("span", "capa__subtitulo", livro.subtitulo));
+  capa.append(
+    criar("span", "capa__autor", juntarAutores(livro.autores)),
+    criar("span", "capa__dica", "Toque de novo para ver os detalhes"),
+    criar("span", "capa__faixa")
+  );
+  return capa;
+}
+
+// Escolhe o lado em que a capa cabe: direita (preferido) ou esquerda.
+// Se não couber em nenhum (prateleira estreita, no celular), rola a prateleira
+// o suficiente para a capa aparecer inteira do lado direito.
+function definirLadoDaCapa(botao, podeRolar = false) {
+  const lista = botao.closest(".prateleira__livros");
+  const area = lista.getBoundingClientRect();
+  const livro = botao.getBoundingClientRect();
+  const larguraCapa = botao.querySelector(".lombada__capa").offsetWidth || 180;
+  const folga = 6;
+  const espacoDireita = area.right - livro.right - folga;
+  const espacoEsquerda = livro.left - area.left - folga;
+
+  if (espacoDireita >= larguraCapa) {
+    botao.classList.remove("lombada--capa-esquerda");
+  } else if (espacoEsquerda >= larguraCapa) {
+    botao.classList.add("lombada--capa-esquerda");
+  } else {
+    botao.classList.remove("lombada--capa-esquerda");
+    if (podeRolar) {
+      ignorarRolagemAte = Date.now() + 700; // essa rolagem é nossa: não fecha a capa
+      lista.scrollBy({ left: larguraCapa - espacoDireita, behavior: "smooth" });
+    }
+  }
+}
+
+// Até quando ignorar rolagens (as que o próprio site faz para mostrar a capa)
+let ignorarRolagemAte = 0;
+
+function fecharCapas(exceto) {
+  document.querySelectorAll(".lombada--aberta").forEach((outra) => {
+    if (outra !== exceto) outra.classList.remove("lombada--aberta");
+  });
+}
+
+function abrirCapa(botao) {
+  fecharCapas(botao);
+  definirLadoDaCapa(botao, true);
+  botao.classList.add("lombada--aberta");
+}
+
+// Tocar fora de um livro (ou rolar a prateleira) fecha a capa aberta
+document.addEventListener("pointerdown", (evento) => {
+  if (!evento.target.closest(".lombada")) fecharCapas();
+});
+document.addEventListener("scroll", () => {
+  if (Date.now() > ignorarRolagemAte) fecharCapas();
+}, { capture: true, passive: true });
 
 // Liga/desliga a fita de "lido" e refaz o rótulo acessível
 function atualizarLombada(botao, estante, livro, total) {
@@ -301,6 +388,7 @@ function linkBusca(livro) {
 }
 
 function abrirPainel(estante, livro, botao) {
+  fecharCapas();
   livroAberto = { estante, livro };
   registrarVisita(`/livro/${idDoLivro(estante, livro)}`);
   if (botao) lombadaQueAbriu = botao;

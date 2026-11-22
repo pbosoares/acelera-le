@@ -80,11 +80,41 @@
       <a class="botao botao--destaque" id="sugerir-livro" href="#" target="_blank" rel="noopener">Sugerir livro</a>
       <button class="botao botao--discreto" id="zerar-progresso" type="button">Zerar meu progresso</button>
     </div>
+
+    <!-- Levar o progresso para outro aparelho, sem login:
+         o que foi lido vira um código curto (ou um link) que outro navegador importa. -->
+    <details class="levar" id="levar">
+      <summary>📲 Levar meu progresso para outro aparelho</summary>
+      <div class="levar__corpo">
+        <p class="levar__dica">
+          Copie o link e abra no outro aparelho: os livros lidos aparecem lá.
+          Nada é apagado, os lidos dos dois aparelhos são somados.
+        </p>
+        <p class="levar__rotulo" id="levar-rotulo">Seu código</p>
+        <code class="levar__codigo" id="levar-codigo" aria-labelledby="levar-rotulo"></code>
+        <div class="levar__botoes">
+          <button class="botao botao--destaque" id="levar-copiar-link" type="button">Copiar link</button>
+          <button class="botao botao--discreto" id="levar-copiar-codigo" type="button">Copiar código</button>
+        </div>
+
+        <form class="levar__importar" id="levar-form">
+          <label class="levar__rotulo" for="levar-entrada">Tem um código ou link de outro aparelho?</label>
+          <div class="levar__linha">
+            <input class="busca__campo" id="levar-entrada" type="text" autocomplete="off" spellcheck="false"
+                   placeholder="Cole o código ou link">
+            <button class="botao botao--discreto" type="submit">Importar</button>
+          </div>
+        </form>
+        <p class="levar__status" id="levar-status" role="status"></p>
+      </div>
+    </details>
+
     <p>
       Feito para a comunidade <strong>Acelera Dev</strong> · Autor: <strong>Pablo Soares</strong> ·
       <a id="link-repositorio" href="#" target="_blank" rel="noopener">código no GitHub</a>
     </p>
     <p class="rodape__nota">Seu progresso fica salvo só neste navegador. Sem login, sem servidor.</p>
+    <p class="rodape__nota">Contamos visitas de forma anônima, sem cookies, para saber quais estantes ajudam mais.</p>
   </footer>
 
   <!-- ===== Painel de detalhes do livro =====

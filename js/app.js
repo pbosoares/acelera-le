@@ -11,6 +11,8 @@
    5) Painel de detalhes
    5b) Pesquisa visual de livros (e filtros)
    5c) Copiar link da estante
+   5d) Levar o progresso para outro aparelho
+   5e) Estatísticas de visita (Vercel Web Analytics)
    6) Sugerir livro e zerar progresso
    7) Começo de tudo
    ========================================================= */
@@ -248,6 +250,7 @@ function marcarEstanteAtiva(indice) {
 
 function irParaEstante(indice) {
   marcarEstanteAtiva(indice);
+  registrarVisita(`/estante/${estantes[indice].id}`);
   const secao = $(estantes[indice].id);
   history.replaceState(null, "", `#${estantes[indice].id}`);
 
@@ -299,6 +302,7 @@ function linkBusca(livro) {
 
 function abrirPainel(estante, livro, botao) {
   livroAberto = { estante, livro };
+  registrarVisita(`/livro/${idDoLivro(estante, livro)}`);
   if (botao) lombadaQueAbriu = botao;
   preencherPainel();
 
@@ -381,6 +385,7 @@ function alternarLido() {
   atualizarProgresso(estantes.indexOf(estante));
   preencherPainel();
   avisar(lidos.has(id) ? `${livro.titulo} marcado como lido` : `${livro.titulo} desmarcado`);
+  atualizarLevar();
 }
 
 // Fala com o leitor de tela sem mexer no foco
@@ -542,25 +547,31 @@ function linkDaEstante(estante) {
   return `${location.origin}${location.pathname}#${estante.id}`;
 }
 
-async function copiarLinkEstante(estante, botao) {
-  const link = linkDaEstante(estante);
-  let copiou = false;
+// Copia um texto para a área de transferência. Devolve true se deu certo.
+async function copiarTexto(texto) {
   try {
-    await navigator.clipboard.writeText(link);
-    copiou = true;
+    await navigator.clipboard.writeText(texto);
+    return true;
   } catch (erro) {
     // Sem permissão para a área de transferência (ou site aberto via file://):
     // tentamos o jeito antigo, com um campo de texto temporário.
     const campo = document.createElement("textarea");
-    campo.value = link;
+    campo.value = texto;
     campo.setAttribute("readonly", "");
     campo.style.position = "fixed";
     campo.style.opacity = "0";
     document.body.append(campo);
     campo.select();
+    let copiou = false;
     try { copiou = document.execCommand("copy"); } catch (e) { copiou = false; }
     campo.remove();
+    return copiou;
   }
+}
+
+async function copiarLinkEstante(estante, botao) {
+  const link = linkDaEstante(estante);
+  const copiou = await copiarTexto(link);
 
   // Retorno visual por 2 segundos e aviso para leitor de tela
   const textoOriginal = "🔗 Copiar link";
@@ -573,6 +584,150 @@ async function copiarLinkEstante(estante, botao) {
     botao.textContent = textoOriginal;
     botao.classList.remove("botao-copiar--ok", "botao-copiar--link");
   }, copiou ? 2000 : 6000);
+}
+
+// ---------- 5d) Levar o progresso para outro aparelho ----------
+// Sem login e sem servidor: os livros lidos viram um código curto.
+// Formato: "estante.numero" separados por "~", ex.: "java.5~python.1b".
+// O número é uma "máscara" em base 36: cada bit é um degrau
+// (bit 0 = degrau 1, bit 1 = degrau 2...). "5" = 101 em binário = degraus 1 e 3.
+
+function gerarCodigo() {
+  const partes = [];
+  for (const estante of estantes) {
+    let mascara = 0;
+    for (const livro of estante.livros) {
+      if (lidos.has(idDoLivro(estante, livro))) mascara |= 1 << (livro.degrau - 1);
+    }
+    if (mascara > 0) partes.push(`${estante.id}.${mascara.toString(36)}`);
+  }
+  return partes.join("~");
+}
+
+// Lê um código (ou um link com ?progresso=...) e devolve os ids dos livros.
+// Devolve null se o texto não for um código válido.
+function lerCodigo(texto) {
+  let codigo = texto.trim();
+  // Aceita o link inteiro: pega só o que vem depois de "progresso="
+  const noLink = codigo.match(/[?&]progresso=([^&#\s]+)/);
+  if (noLink) codigo = decodeURIComponent(noLink[1]);
+  if (!codigo) return null;
+
+  const ids = new Set();
+  for (const parte of codigo.split("~")) {
+    const [idEstante, mascaraTexto] = parte.split(".");
+    const estante = estantes.find((e) => e.id === idEstante);
+    const mascara = parseInt(mascaraTexto, 36);
+    if (!estante || !mascaraTexto || Number.isNaN(mascara)) return null;
+    for (const livro of estante.livros) {
+      if (mascara & (1 << (livro.degrau - 1))) ids.add(idDoLivro(estante, livro));
+    }
+  }
+  return ids;
+}
+
+function linkComProgresso() {
+  return `${location.origin}${location.pathname}?progresso=${encodeURIComponent(gerarCodigo())}`;
+}
+
+// Soma os livros importados aos já lidos (nunca apaga nada) e redesenha.
+// Devolve quantos livros eram novos neste aparelho.
+function importarLidos(ids) {
+  let novos = 0;
+  for (const id of ids) {
+    if (!lidos.has(id)) { lidos.add(id); novos++; }
+  }
+  salvarLidos();
+  desenharEstantes();
+  marcarEstanteAtiva(estanteAtiva);
+  acompanharRolagem();
+  atualizarLevar();
+  return novos;
+}
+
+function mensagemImportacao(total, novos) {
+  if (novos === 0) return `Tudo certo: os ${total} livros desse código já estavam marcados aqui.`;
+  return novos === 1 ? "1 livro novo marcado como lido." : `${novos} livros novos marcados como lidos.`;
+}
+
+// Mostra o código atual na caixinha (e desliga os botões se não há nada lido)
+function atualizarLevar() {
+  const codigo = gerarCodigo();
+  $("levar-codigo").textContent = codigo || "Marque algum livro como lido para gerar seu código.";
+  $("levar-codigo").classList.toggle("levar__codigo--vazio", !codigo);
+  $("levar-copiar-link").disabled = !codigo;
+  $("levar-copiar-codigo").disabled = !codigo;
+}
+
+function statusLevar(mensagem) {
+  $("levar-status").textContent = mensagem;
+}
+
+function prepararLevar() {
+  $("levar").addEventListener("toggle", atualizarLevar);
+  atualizarLevar();
+
+  $("levar-copiar-link").addEventListener("click", async () => {
+    const link = linkComProgresso();
+    const copiou = await copiarTexto(link);
+    statusLevar(copiou ? "✓ Link copiado! Abra no outro aparelho." : `Copie este link: ${link}`);
+  });
+
+  $("levar-copiar-codigo").addEventListener("click", async () => {
+    const codigo = gerarCodigo();
+    const copiou = await copiarTexto(codigo);
+    statusLevar(copiou ? "✓ Código copiado!" : `Copie este código: ${codigo}`);
+  });
+
+  $("levar-form").addEventListener("submit", (evento) => {
+    evento.preventDefault(); // o formulário não recarrega a página
+    const ids = lerCodigo($("levar-entrada").value);
+    if (!ids) {
+      statusLevar("Código inválido. Confira se copiou ele inteiro.");
+      return;
+    }
+    const novos = importarLidos(ids);
+    $("levar-entrada").value = "";
+    statusLevar(mensagemImportacao(ids.size, novos));
+    avisar(mensagemImportacao(ids.size, novos));
+  });
+}
+
+// Chegou por um link com ?progresso=...? Importa e limpa o endereço.
+function importarDoEndereco() {
+  const parametro = new URLSearchParams(location.search).get("progresso");
+  if (parametro === null) return;
+  history.replaceState(null, "", `${location.pathname}${location.hash}`);
+
+  const ids = lerCodigo(`?progresso=${encodeURIComponent(parametro)}`);
+  $("levar").open = true; // mostra o resultado no rodapé
+  if (!ids) {
+    statusLevar("O link de progresso não é válido. Peça para gerar de novo.");
+    return;
+  }
+  const novos = importarLidos(ids);
+  statusLevar(`Progresso importado! ${mensagemImportacao(ids.size, novos)}`);
+  avisar(`Progresso importado. ${mensagemImportacao(ids.size, novos)}`);
+}
+
+// ---------- 5e) Estatísticas de visita (Vercel Web Analytics) ----------
+// Anônimo e sem cookies. Só liga no site publicado na Vercel (no localhost
+// ou abrindo o arquivo direto, nada é enviado).
+// Além da visita à página, registramos "visitas virtuais" para saber o que
+// as pessoas procuram: /estante/<id> (ao escolher um tema) e /livro/<id>
+// (ao abrir os detalhes de um livro). Elas aparecem em "Pages" no painel.
+
+function ligarAnalytics() {
+  if (!location.hostname.endsWith(".vercel.app")) return;
+  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+  const script = document.createElement("script");
+  script.defer = true;
+  script.src = "/_vercel/insights/script.js";
+  document.head.append(script);
+}
+
+function registrarVisita(caminho) {
+  if (typeof window.va === "function") window.va("pageview", { route: caminho, path: caminho });
 }
 
 // ---------- 6) Sugerir livro e zerar progresso ----------
@@ -605,6 +760,7 @@ function prepararRodape() {
     desenharEstantes();
     marcarEstanteAtiva(estanteAtiva);
     acompanharRolagem();
+    atualizarLevar();
     avisar("Progresso zerado.");
   });
 }
@@ -612,6 +768,7 @@ function prepararRodape() {
 // ---------- 7) Começo de tudo ----------
 
 async function iniciar() {
+  ligarAnalytics();
   carregarLidos();
   prepararPainel();
 
@@ -629,11 +786,14 @@ async function iniciar() {
   desenharEstantes();
   prepararRodape();
   prepararBusca();
+  prepararLevar();
   acompanharRolagem();
+  importarDoEndereco();
 
   // Se o endereço já tem #java, #python… começa por essa estante
   const pedida = estantes.findIndex((estante) => `#${estante.id}` === location.hash);
   marcarEstanteAtiva(pedida >= 0 ? pedida : 0);
+  if (pedida >= 0) registrarVisita(`/estante/${estantes[pedida].id}`);
   if (pedida >= 0 && !CELULAR.matches) $(estantes[pedida].id).scrollIntoView();
 }
 

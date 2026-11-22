@@ -98,6 +98,7 @@ O script também confere se nenhuma estante passou de 7 livros e se os degraus e
 
 - Chave: `acelera-le:lidos` → array de ids `"java-1"`, `"python-3"`…
 - Toda leitura e escrita dentro de `try/catch`.
+- Código de transferência: `estante.mascara` separados por `~`. A máscara é um número em base 36 em que o bit 0 é o degrau 1, o bit 1 é o degrau 2 etc. Ex.: `java.5` = degraus 1 e 3 de Java.
 
 ## Publicação
 

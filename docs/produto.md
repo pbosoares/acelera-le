@@ -48,6 +48,12 @@ Abre um painel lateral no desktop e uma gaveta de baixo para cima no celular. Mo
 - Cada prateleira mostra "**3/7 lidos**" com uma barrinha.
 - Salvo no `localStorage` do navegador (sem login, sem servidor). Se o localStorage falhar, o site continua funcionando, só não lembra o progresso.
 - Botão "Zerar meu progresso" no rodapé.
+- **Levar para outro aparelho** (rodapé): os lidos viram um código curto, como `logica.5~python.2`, ou um link `?progresso=...`. Abrir o link ou colar o código em outro navegador **soma** os lidos (nunca apaga). Sem login e sem servidor.
+
+## Estatísticas de visita
+
+- Vercel Web Analytics: anônimo e sem cookies, só no site publicado (no localhost nada é enviado).
+- Além da página inicial, registra visitas virtuais `/estante/<id>` (ao escolher um tema ou chegar por link) e `/livro/<id>` (ao abrir um livro), para saber quais estantes e livros mais interessam.
 
 ## Sugerir livro
 

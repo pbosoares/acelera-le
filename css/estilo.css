@@ -753,6 +753,54 @@ a {
   gap: 12px;
   margin-bottom: 24px;
 }
+/* "Levar meu progresso para outro aparelho" */
+.levar {
+  max-width: 560px;
+  margin: 0 auto 24px;
+  border: 1px solid var(--linha);
+  border-radius: var(--raio);
+  background: var(--superficie);
+  text-align: left;
+}
+.levar summary {
+  padding: 14px 18px;
+  font-weight: 600;
+  color: var(--texto);
+  cursor: pointer;
+}
+.levar summary:hover { color: var(--marca); }
+.levar__corpo { padding: 0 18px 18px; }
+.levar__dica { margin: 0 0 14px; color: var(--texto-suave); font-size: .95rem; }
+.levar__rotulo {
+  display: block;
+  margin: 14px 0 6px;
+  font-family: var(--fonte-mono);
+  font-size: .72rem;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--marca);
+}
+.levar__codigo {
+  display: block;
+  padding: 10px 12px;
+  border: 1px dashed var(--linha);
+  border-radius: 10px;
+  background: var(--fundo);
+  font-family: var(--fonte-mono);
+  font-size: .9rem;
+  color: var(--texto);
+  overflow-wrap: anywhere;
+  user-select: all;
+}
+.levar__codigo--vazio { color: var(--texto-apagado); user-select: none; }
+.levar__botoes { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+.levar__botoes .botao { flex: 1 1 160px; }
+.levar__importar { margin-top: 8px; }
+.levar__linha { display: flex; gap: 8px; }
+.levar__linha .busca__campo { flex: 1; min-width: 0; }
+.levar__status { min-height: 1.5em; margin: 12px 0 0 !important; color: var(--marca); font-weight: 600; overflow-wrap: anywhere; }
+
 .rodape p { margin: 6px 0; }
 .rodape strong { color: var(--texto); }
 .rodape__nota {

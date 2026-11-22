@@ -297,6 +297,36 @@ a {
   box-shadow: var(--brilho);
 }
 
+/* Filtros "Só em português" / "Só gratuitos": pílulas que acendem quando ligadas */
+.filtros {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  max-width: var(--largura-max);
+  margin: 0 auto 10px;
+  padding: 0 16px;
+}
+.filtro {
+  min-height: 36px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px dashed var(--linha);
+  background: transparent;
+  color: var(--texto-suave);
+  font: inherit;
+  font-size: .86rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.filtro:hover { border-color: var(--marca); color: var(--texto); }
+.filtro[aria-pressed="true"] {
+  border: 1px solid var(--marca);
+  background: rgba(0, 224, 164, .12);
+  color: var(--marca);
+}
+.filtro[aria-pressed="true"]::before { content: "✓ "; }
+
 /* Pesquisa: o chip da estante que tem resultado ganha borda verde e um pontinho */
 .chip--achado { border-color: var(--marca); }
 .chip--achado::after {
@@ -324,7 +354,7 @@ a {
 
 .estante {
   /* Espaço para o topo grudado não cobrir o título ao pular pelo chip */
-  scroll-margin-top: 140px;   /* a barra grudada agora inclui a pesquisa */
+  scroll-margin-top: 190px;   /* a barra grudada inclui a pesquisa e os filtros */
   margin: 0 0 64px;
 }
 .estante__cabecalho {
@@ -347,6 +377,29 @@ a {
   margin: 4px 0 0;
   color: var(--texto-suave);
 }
+
+/* Botão "Copiar link" ao lado da descrição da estante */
+.botao-copiar {
+  margin-top: 8px;
+  min-height: 32px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--linha);
+  background: var(--superficie);
+  color: var(--texto-suave);
+  font-family: var(--fonte-mono);
+  font-size: .74rem;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+.botao-copiar:hover { border-color: var(--marca); color: var(--texto); }
+.botao-copiar--ok { border-color: var(--marca); color: var(--marca); }
+/* Quando não deu para copiar, o botão mostra o link: sem caixa alta, para não confundir */
+.botao-copiar--link { text-transform: none; letter-spacing: 0; user-select: all; }
 
 /* Progresso "3/7 lidos" + barrinha */
 .progresso {
@@ -714,6 +767,11 @@ a {
 @media (max-width: 720px) {
   .topo { padding-top: 40px; }
   .topo__fundo { top: 24px; }
+
+  /* No celular a barra (pesquisa + filtros + chips) não gruda no topo:
+     ela ocuparia meia tela. Lá só aparece uma estante por vez, então a página é curta. */
+  .temas { position: static; }
+  .estante { scroll-margin-top: 16px; }
 
   /* Chips em uma linha que rola para o lado (só a lista rola, não a página) */
   .temas__lista {

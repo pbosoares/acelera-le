@@ -5,6 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Acelera Lê! · A estante de leitura da Acelera Dev</title>
   <meta name="description" content="Roadmaps de leitura para quem está começando na programação: uma estante por tema, do iniciante ao avançado.">
+
+  <!-- Prévia do link ao compartilhar (WhatsApp, Discord, LinkedIn, X...).
+       A imagem precisa de endereço completo. Fonte dela: ferramentas/preview.html -->
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:site_name" content="Acelera Lê!">
+  <meta property="og:title" content="Acelera Lê! · A estante de leitura da Acelera Dev">
+  <meta property="og:description" content="Não sabe qual livro de programação ler? Siga a estante: até 7 livros por tema, do iniciante ao avançado, a maioria em português.">
+  <meta property="og:url" content="https://acelera-le.vercel.app/">
+  <meta property="og:image" content="https://acelera-le.vercel.app/img/preview.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Acelera Lê!: uma estante com 7 livros, do iniciante ao avançado">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#050505">
   <!-- Fontes do tema da Acelera Dev. Sem internet, o site usa as fontes do sistema. -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -44,6 +59,11 @@
         <label class="so-leitor" for="busca">Pesquisar livros por título, autor ou palavra-chave</label>
         <input class="busca__campo" id="busca" type="search" autocomplete="off"
                placeholder="Pesquisar livro, autor ou palavra-chave">
+      </div>
+      <!-- Filtros: funcionam junto com a pesquisa (aria-pressed diz se estão ligados) -->
+      <div class="filtros" role="group" aria-label="Filtros">
+        <button class="filtro" id="filtro-pt" type="button" aria-pressed="false">Só em português</button>
+        <button class="filtro" id="filtro-gratis" type="button" aria-pressed="false">Só gratuitos</button>
       </div>
       <ul class="temas__lista" id="temas"></ul>
     </nav>

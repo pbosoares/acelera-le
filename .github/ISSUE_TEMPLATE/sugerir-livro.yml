@@ -21,6 +21,7 @@ body:
         - Banco de Dados
         - DevOps
         - Design System
+        - Carreira
         - Nova estante (explique abaixo)
     validations:
       required: true

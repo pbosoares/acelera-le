@@ -6,44 +6,46 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@800;900&family=Geist+Mono:wght@600&family=Inter:wght@600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,800;1,9..144,800&family=IBM+Plex+Mono:wght@600&family=Inter:wght@600&display=swap">
 <style>
+  /* Paleta "Papel e tinta", a mesma do site */
   * { box-sizing: border-box; margin: 0; }
   body {
     width: 1200px; height: 630px; overflow: hidden;
-    background: #050505 radial-gradient(ellipse 70% 60% at 30% 0%, rgba(0,224,164,.16), transparent 70%);
-    color: #f2f4f1; font-family: Inter, sans-serif;
+    background: #f6f1e7 radial-gradient(ellipse 70% 60% at 30% 0%, rgba(200,85,61,.10), transparent 70%);
+    color: #1e1b3a; font-family: Inter, sans-serif;
     display: grid; grid-template-columns: 1fr 470px; align-items: center;
     padding: 0 70px; position: relative;
   }
   .fundo {
-    position: absolute; left: -20px; bottom: -70px;
-    font: 900 260px/1 Archivo, sans-serif; letter-spacing: -.04em;
-    color: transparent; -webkit-text-stroke: 2px #151a19;
+    position: absolute; left: -20px; bottom: -80px;
+    font: 800 260px/1 Fraunces, serif; letter-spacing: -.03em;
+    color: transparent; -webkit-text-stroke: 2px #e7dcc6;
   }
   .texto { position: relative; }
   .selo {
-    display: inline-block; padding: 8px 16px; border: 1px solid #1f2524; border-radius: 999px;
-    background: #0b0d0d; font: 600 18px "Geist Mono", monospace; letter-spacing: .12em;
-    text-transform: uppercase; color: #c4cbc7;
+    display: inline-block; padding: 8px 16px; border: 1px solid #ddd2bd; border-radius: 999px;
+    background: #fffcf5; font: 600 18px "IBM Plex Mono", monospace; letter-spacing: .12em;
+    text-transform: uppercase; color: #4a4560;
   }
-  h1 { margin-top: 26px; font: 900 112px/.92 Archivo, sans-serif; letter-spacing: -.04em; text-transform: uppercase; }
-  h1 span { background: linear-gradient(90deg,#00e0a4,#00b9c8); -webkit-background-clip: text; color: transparent; }
-  p { margin-top: 26px; font-size: 30px; line-height: 1.3; color: #c4cbc7; max-width: 560px; }
-  p b { color: #f2f4f1; }
+  h1 { margin-top: 24px; font: 800 118px/.95 Fraunces, serif; letter-spacing: -.02em; }
+  h1 span { color: #b04632; font-style: italic; }
+  p { margin-top: 26px; font-size: 30px; line-height: 1.3; color: #4a4560; max-width: 560px; }
+  p b { color: #1e1b3a; }
   .estante {
     position: relative; height: 400px; padding: 30px 26px 0;
-    border: 1px solid #1f2524; border-radius: 18px; background: linear-gradient(#0b0d0d,#070909);
+    border: 1px solid #ddd2bd; border-radius: 18px; background: #efe7d6;
+    box-shadow: inset 0 8px 18px rgba(30,27,58,.08);
     display: flex; flex-direction: column; justify-content: flex-end; overflow: hidden;
   }
-  .estante::before { content: ""; position: absolute; inset: 0 0 auto; height: 3px; background: linear-gradient(90deg,#00e0a4,#00b9c8); }
   .livros { display: flex; align-items: flex-end; gap: 9px; }
   .livro { width: 52px; border-radius: 4px 4px 1px 1px; display: flex; flex-direction: column; align-items: center; padding-top: 10px;
+    box-shadow: 2px 0 0 rgba(30,27,58,.25);
     background-image: linear-gradient(90deg, rgba(0,0,0,.3), rgba(255,255,255,.05) 12%, transparent 28%, transparent 80%, rgba(0,0,0,.25)); }
-  .livro i { width: 24px; height: 24px; border-radius: 50%; background: #fff; color: #0b0d0d; font: 600 13px/24px "Geist Mono", monospace; text-align: center; font-style: normal; }
+  .livro i { width: 24px; height: 24px; border-radius: 50%; background: #fff; color: #1e1b3a; font: 600 13px/24px "IBM Plex Mono", monospace; text-align: center; font-style: normal; }
   .livro b { flex: 1; }
   .livro s { display: block; width: 100%; height: 10px; }
-  .tabua { height: 16px; margin: 0 -26px; background: linear-gradient(#1c2221,#0e1111); border-top: 3px solid #00e0a4; box-shadow: 0 -10px 28px rgba(0,224,164,.22); }
+  .tabua { height: 18px; margin: 0 -26px; background: linear-gradient(#d9bb8f, #c39e6c 55%, #a8845a); box-shadow: 0 6px 12px rgba(30,27,58,.18); }
 </style>
 </head>
 <body>
@@ -55,13 +57,13 @@
   </div>
   <div class="estante">
     <div class="livros">
-      <div class="livro" style="height:250px;background-color:#9B2C22"><i>1</i><b></b><s style="background:#00e0a4"></s></div>
-      <div class="livro" style="height:212px;background-color:#1F4E5F"><i>2</i><b></b><s style="background:#00e0a4"></s></div>
-      <div class="livro" style="height:272px;background-color:#7A4A12"><i>3</i><b></b><s style="background:#f2c94c"></s></div>
-      <div class="livro" style="height:236px;background-color:#2E5A3A"><i>4</i><b></b><s style="background:#f2c94c"></s></div>
-      <div class="livro" style="height:290px;background-color:#56306B"><i>5</i><b></b><s style="background:#f2c94c"></s></div>
-      <div class="livro" style="height:258px;background-color:#213A6B"><i>6</i><b></b><s style="background:#ff5a4e"></s></div>
-      <div class="livro" style="height:228px;background-color:#7A2A3A"><i>7</i><b></b><s style="background:#ff5a4e"></s></div>
+      <div class="livro" style="height:250px;background-color:#9B2C22"><i>1</i><b></b><s style="background:#2f9e6e"></s></div>
+      <div class="livro" style="height:212px;background-color:#1F4E5F"><i>2</i><b></b><s style="background:#2f9e6e"></s></div>
+      <div class="livro" style="height:272px;background-color:#7A4A12"><i>3</i><b></b><s style="background:#e3a82b"></s></div>
+      <div class="livro" style="height:236px;background-color:#2E5A3A"><i>4</i><b></b><s style="background:#e3a82b"></s></div>
+      <div class="livro" style="height:290px;background-color:#56306B"><i>5</i><b></b><s style="background:#e3a82b"></s></div>
+      <div class="livro" style="height:258px;background-color:#213A6B"><i>6</i><b></b><s style="background:#d64545"></s></div>
+      <div class="livro" style="height:228px;background-color:#7A2A3A"><i>7</i><b></b><s style="background:#d64545"></s></div>
     </div>
     <div class="tabua"></div>
   </div>

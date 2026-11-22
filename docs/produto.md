@@ -4,18 +4,24 @@
 
 Uma **biblioteca**: a página mostra uma prateleira de madeira por tema. Em cada prateleira ficam até 7 **lombadas** de livros, da esquerda (iniciante) para a direita (avançado). A pessoa bate o olho e entende o caminho.
 
+## Paleta "Papel e tinta"
+
+Identidade própria, diferente do site da Acelera Dev: fundo creme de papel `#F6F1E7`, texto em tinta azul-marinho `#1E1B3A`, destaque terracota `#B04632` (texto e botões; `#C8553D` só decorativo) e azul-tinta `#2E4A7D` de apoio. Títulos em Fraunces (serifada), texto em Inter, rótulos em IBM Plex Mono. Contraste conferido no WCAG AA.
+
 ## Página
 
 - **Topo:** logo "Acelera Lê!", subtítulo "A estante de leitura da Acelera Dev" e uma frase curta explicando o roadmap.
 - **Navegação por tema:** chips/abas com os temas (Lógica de Programação, Java, Python, JavaScript / Front-end, IA, Engenharia de Software, Banco de Dados, DevOps, Design System, Carreira). No desktop, todas as prateleiras aparecem empilhadas com rolagem e os chips levam até a prateleira. No celular, uma estante por vez.
 - **Legenda de níveis:** 🟢 Iniciante · 🟡 Intermediário · 🔴 Avançado.
-- **Rodapé:** "Feito para a comunidade Acelera Dev - Autor: Pablo Soares", link do repositório e o botão "Sugerir livro".
+- **Rodapé:** "Feito para a comunidade Acelera Dev - Autor: Pablo Soares" e os contribuidores (Lucas Bizoni), link do repositório e o botão "Sugerir livro".
 
 ## Lombada (cada livro)
 
 - Retângulo vertical, com altura e largura levemente diferentes entre os livros, para parecer uma estante real.
 - Cor de fundo própria por livro (paleta definida no JSON).
-- **Título escrito em pé** (`writing-mode: vertical-rl`) e autor em letra menor.
+- **Título na horizontal**, quebrando em várias linhas para ler sem virar a cabeça, e autor em letra menor na base.
+- **Capa 3D**: ao passar o mouse (ou focar pelo teclado) a capa abre como uma porta presa na lombada, mostrando nível, título, subtítulo e autor. No celular, o 1º toque abre a capa e o 2º abre os detalhes. A capa é desenhada em CSS (sem imagem de capa real).
+- No celular, a prateleira rola para o lado para as lombadas terem largura de leitura.
 - **Número do degrau** (1–7) num selo no topo.
 - **Faixa de nível** na base: verde, amarela ou vermelha.
 - Hover/foco: o livro "sai" um pouco da prateleira (translateY + sombra).

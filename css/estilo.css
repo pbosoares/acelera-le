@@ -1,8 +1,8 @@
 /* =========================================================
    Acelera Lê! · estilos
-   Visual inspirado no tema da Acelera Dev: fundo quase preto,
-   verde-água em degradê, títulos em Archivo bem pesado,
-   texto em Inter e rótulos em Geist Mono.
+   Paleta "Papel e tinta": fundo creme de papel, texto azul-marinho
+   de tinta e destaque terracota. Títulos em Fraunces (serifada, com
+   cara de livro), texto em Inter e rótulos em IBM Plex Mono.
 
    Organização: 1) variáveis  2) base  3) topo  4) estantes
    5) lombadas  6) painel  7) rodapé  8) celular
@@ -10,31 +10,33 @@
 
 /* ---------- 1) Variáveis (cores e medidas) ---------- */
 :root {
-  --fundo: #050505;
-  --superficie: #0b0d0d;      /* cartões e painel */
-  --superficie-2: #131716;
-  --texto: #f2f4f1;
-  --texto-suave: #c4cbc7;     /* passa no WCAG AA sobre o fundo */
-  --texto-apagado: #8e9894;   /* só para detalhes, nunca para texto longo */
-  --linha: #1f2524;
+  --fundo: #f6f1e7;           /* creme de papel */
+  --superficie: #fffcf5;      /* cartões, campos e painel (papel mais claro) */
+  --superficie-2: #efe7d6;    /* nicho da prateleira e fundos discretos */
+  --texto: #1e1b3a;           /* tinta azul-marinho (14,6:1 sobre o fundo) */
+  --texto-suave: #4a4560;     /* 8:1 sobre o fundo */
+  --texto-apagado: #6e6880;   /* 4,7:1: só para detalhes, nunca texto longo */
+  --linha: #ddd2bd;
 
-  /* Verde-água da marca */
-  --marca: #00e0a4;
-  --marca-2: #00b9c8;
-  --degrade: linear-gradient(90deg, var(--marca) 0%, var(--marca-2) 100%);
-  --texto-sobre-marca: #00140e;
-  --brilho: 0 0 24px rgba(0, 224, 164, .35);
+  /* Terracota da marca. --marca é o tom de texto/botão (passa no AA);
+     --marca-clara é só decorativa (fita, detalhes). */
+  --marca: #b04632;
+  --marca-clara: #c8553d;
+  --marca-2: #2e4a7d;         /* azul-tinta, cor de apoio */
+  --degrade: linear-gradient(90deg, var(--marca-clara) 0%, var(--marca) 100%);
+  --texto-sobre-marca: #ffffff;
+  --brilho: 0 6px 18px rgba(176, 70, 50, .22);
 
   /* Níveis (faixa na base da lombada) */
-  --iniciante: #00e0a4;
-  --intermediario: #f2c94c;
-  --avancado: #ff5a4e;
+  --iniciante: #2f9e6e;
+  --intermediario: #e3a82b;
+  --avancado: #d64545;
 
   --raio: 14px;
   --largura-max: 1120px;
   --fonte: "Inter", "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
-  --fonte-titulo: "Archivo", "Segoe UI", system-ui, sans-serif;
-  --fonte-mono: "Geist Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --fonte-titulo: "Fraunces", Georgia, "Times New Roman", serif;
+  --fonte-mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
 }
 
 /* ---------- 2) Base ---------- */
@@ -52,13 +54,13 @@ body {
   font-size: 16px;
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
-  /* Um brilho verde bem discreto no alto da página */
-  background-image: radial-gradient(ellipse 70% 35% at 50% 0%, rgba(0, 224, 164, .10) 0%, transparent 70%);
+  /* Um tom quente bem discreto no alto da página, como luz de luminária */
+  background-image: radial-gradient(ellipse 70% 35% at 50% 0%, rgba(200, 85, 61, .08) 0%, transparent 70%);
   background-repeat: no-repeat;
 }
 
 a { color: var(--marca); }
-a:hover { color: #5cf0c8; }
+a:hover { color: #8f3626; }
 
 /* Contorno de foco bem visível para quem navega pelo teclado */
 :focus-visible {
@@ -109,24 +111,23 @@ a {
   padding: 12px 24px;
   border-radius: 999px;
   border: 1px solid transparent;
-  font-family: var(--fonte-titulo);
-  font-size: .95rem;
-  font-weight: 800;
-  letter-spacing: .02em;
-  text-transform: uppercase;
+  font-family: var(--fonte);
+  font-size: .98rem;
+  font-weight: 700;
   text-decoration: none;
   cursor: pointer;
   transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
 }
 .botao--destaque {
-  background: var(--degrade);
+  background: var(--marca);
   color: var(--texto-sobre-marca);
   box-shadow: var(--brilho);
 }
 .botao--destaque:hover {
   color: var(--texto-sobre-marca);
   transform: translateY(-1px);
-  box-shadow: 0 0 34px rgba(0, 224, 164, .5);
+  background: #9a3b29;
+  box-shadow: 0 8px 22px rgba(176, 70, 50, .3);
 }
 .botao--discreto {
   background: var(--superficie);
@@ -155,7 +156,7 @@ a {
   line-height: 1;
   letter-spacing: -.04em;
   color: transparent;
-  -webkit-text-stroke: 2px #141918;
+  -webkit-text-stroke: 2px #e7dcc6;
   white-space: nowrap;
   pointer-events: none;
   user-select: none;
@@ -182,18 +183,15 @@ a {
 .logo {
   margin: 0;
   font-family: var(--fonte-titulo);
-  font-weight: 900;
-  font-size: clamp(2.8rem, 9vw, 5rem);
-  line-height: .95;
-  letter-spacing: -.035em;
-  text-transform: uppercase;
+  font-weight: 800;
+  font-size: clamp(3rem, 10vw, 5.4rem);
+  line-height: 1;
+  letter-spacing: -.02em;
 }
-/* "LÊ!" com o degradê da marca */
+/* "Lê!" em terracota e itálico, como uma assinatura */
 .logo span {
-  background: var(--degrade);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: var(--marca);
+  font-style: italic;
 }
 .subtitulo {
   margin: 14px 0 0;
@@ -237,7 +235,7 @@ a {
   z-index: 5;
   margin-top: 32px;
   padding: 12px 0;
-  background: rgba(5, 5, 5, .9);
+  background: rgba(246, 241, 231, .92);
   backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--linha);
 }
@@ -290,11 +288,10 @@ a {
 }
 .chip:hover { border-color: var(--marca); }
 .chip[aria-current="true"] {
-  background: var(--degrade);
-  border-color: transparent;
-  color: var(--texto-sobre-marca);
+  background: var(--texto);
+  border-color: var(--texto);
+  color: var(--fundo);
   font-weight: 700;
-  box-shadow: var(--brilho);
 }
 
 /* Filtros "Só em português" / "Só gratuitos": pílulas que acendem quando ligadas */
@@ -322,7 +319,7 @@ a {
 .filtro:hover { border-color: var(--marca); color: var(--texto); }
 .filtro[aria-pressed="true"] {
   border: 1px solid var(--marca);
-  background: rgba(0, 224, 164, .12);
+  background: rgba(176, 70, 50, .10);
   color: var(--marca);
 }
 .filtro[aria-pressed="true"]::before { content: "✓ "; }
@@ -337,7 +334,7 @@ a {
   border-radius: 50%;
   background: var(--marca);
 }
-.chip--achado[aria-current="true"]::after { background: var(--texto-sobre-marca); }
+.chip--achado[aria-current="true"]::after { background: var(--fundo); }
 
 /* ---------- 4) Estantes ---------- */
 .estantes {
@@ -368,7 +365,7 @@ a {
 .estante__nome {
   margin: 0;
   font-family: var(--fonte-titulo);
-  font-weight: 900;
+  font-weight: 800;
   font-size: clamp(1.7rem, 4vw, 2.2rem);
   line-height: 1.1;
   letter-spacing: -.03em;
@@ -427,24 +424,17 @@ a {
   transition: width .3s ease;
 }
 
-/* A prateleira: um cartão escuro com borda em degradê no topo,
-   e os livros em pé sobre a "tábua" iluminada */
+/* A prateleira: o nicho da estante, com os livros em pé sobre a tábua de madeira */
 .prateleira {
   position: relative;
   padding: 32px 20px 0;
   border: 1px solid var(--linha);
   border-radius: var(--raio);
-  background: linear-gradient(180deg, var(--superficie) 0%, #070909 100%);
+  background: var(--superficie-2);
+  box-shadow: inset 0 8px 18px rgba(30, 27, 58, .08);
   overflow: hidden;
 }
-.prateleira::before {
-  content: "";
-  position: absolute;
-  inset: 0 0 auto 0;
-  height: 2px;
-  background: var(--degrade);
-  opacity: .8;
-}
+.prateleira::before { content: none; }
 /* Pesquisa: a estante que tem o livro procurado acende (borda e brilho da marca) */
 .prateleira { transition: border-color .25s ease, box-shadow .25s ease; }
 .estante--achada .prateleira {
@@ -467,15 +457,16 @@ a {
   list-style: none;
   min-height: 350px;
 }
-.prateleira__livros li { display: flex; }
+.prateleira__livros li { display: flex; position: relative; }
 
-/* A tábua: grafite com uma linha de luz verde em cima */
+/* A tábua: madeira clara, como uma estante de verdade */
 .prateleira__tabua {
   height: 18px;
   margin: 0 -20px;
-  background: linear-gradient(180deg, #1c2221 0%, #0e1111 100%);
-  border-top: 2px solid var(--marca);
-  box-shadow: 0 -8px 24px rgba(0, 224, 164, .18);
+  background:
+    repeating-linear-gradient(92deg, rgba(0,0,0,.04) 0 3px, transparent 3px 12px),
+    linear-gradient(180deg, #d9bb8f 0%, #c39e6c 55%, #a8845a 100%);
+  box-shadow: 0 6px 12px rgba(30, 27, 58, .18);
 }
 
 /* ---------- 5) Lombadas ---------- */
@@ -499,28 +490,33 @@ a {
   color: #ffffff;
   font: inherit;
   cursor: pointer;
-  box-shadow: 2px 0 0 rgba(0,0,0,.4);
+  box-shadow: 2px 0 0 rgba(30, 27, 58, .25);
   /* Letras mais definidas */
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  /* Profundidade para a capa abrir em 3D */
+  perspective: 900px;
   transition: transform .18s ease, box-shadow .18s ease, opacity .25s ease, filter .25s ease;
 }
 /* Pesquisa: o livro que não bate fica escuro e levemente desfocado (continua no lugar) */
 .lombada--apagada {
   opacity: .4;
-  filter: blur(1.5px) brightness(.6);
+  filter: grayscale(.7) blur(1px);
 }
 /* Livro "sai" da prateleira ao passar o mouse ou receber foco pelo teclado.
    O hover só vale em aparelhos com mouse: no celular ele ficaria "preso" depois do toque. */
 @media (hover: hover) {
   .lombada:hover {
+    z-index: 5; /* fica na frente dos vizinhos enquanto a capa está aberta */
     transform: translateY(-14px);
-    box-shadow: 0 16px 24px rgba(0,0,0,.6), 0 0 0 2px rgba(0, 224, 164, .55);
+    box-shadow: 0 14px 22px rgba(30, 27, 58, .28), 0 0 0 2px rgba(176, 70, 50, .55);
   }
 }
-.lombada:focus-visible {
+.lombada:focus-visible,
+.lombada--aberta {
+  z-index: 5;
   transform: translateY(-14px);
-  box-shadow: 0 16px 24px rgba(0,0,0,.6), 0 0 0 2px rgba(0, 224, 164, .55);
+  box-shadow: 0 14px 22px rgba(30, 27, 58, .28), 0 0 0 2px rgba(176, 70, 50, .55);
 }
 .lombada:focus-visible { outline-offset: 2px; }
 
@@ -532,42 +528,149 @@ a {
   width: 26px; height: 26px;
   border-radius: 50%;
   background: #ffffff;
-  color: #0b0d0d;
+  color: #1e1b3a;
   font-family: var(--fonte-mono);
   font-size: .82rem;
   font-weight: 600;
 }
 
-/* Título escrito em pé */
+/* Título na horizontal: lê sem virar a cabeça.
+   Quebra em várias linhas (com hifenização em português) e corta depois de 7 linhas. */
 .lombada__titulo {
-  flex: 1;
-  min-height: 0;
-  margin-top: 10px;
-  writing-mode: vertical-rl;
-  font-family: var(--fonte-titulo);
-  font-size: 1.02rem;
-  font-weight: 800;
-  line-height: 1.15;
-  letter-spacing: .01em;
+  width: 100%;
+  margin-top: 12px;
+  padding: 0 6px;
+  font-family: var(--fonte);
+  font-size: .82rem;
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: center;
   text-shadow: 0 1px 1px rgba(0, 0, 0, .45);
-  /* Até 3 colunas de texto (3 × line-height): o corte cai entre colunas, nunca no meio da letra */
-  max-width: 3.45em;
+  hyphens: auto;
+  overflow-wrap: break-word;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 7;
   overflow: hidden;
-  text-align: start;
 }
+.lombada--titulo-compacto .lombada__titulo { font-size: .72rem; padding: 0 4px; }
+/* Autor embaixo, também na horizontal (até 2 linhas) */
 .lombada__autor {
-  flex: none;
-  max-height: 34%;
-  margin: 8px 0 8px;
-  writing-mode: vertical-rl;
-  font-size: .78rem;
+  width: 100%;
+  margin: auto 0 10px;   /* "auto" empurra o autor para a base da lombada */
+  padding: 0 6px;
+  font-size: .68rem;
   font-weight: 600;
+  line-height: 1.25;
+  text-align: center;
   color: #f3f5f2;
   text-shadow: 0 1px 1px rgba(0, 0, 0, .45);
-  white-space: nowrap;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
   overflow: hidden;
-  text-overflow: ellipsis;
 }
+
+/* ---- Capa 3D: abre como uma porta, presa na lateral da lombada ----
+   Fechada, ela fica "de lado" (girada 90°) e não aparece.
+   Abre ao passar o mouse, ao focar pelo teclado ou no primeiro toque no celular.
+   É desenhada em CSS: o projeto não usa imagens de capas reais. */
+.lombada__capa {
+  --largura-capa: 180px;
+  position: absolute;
+  top: 0;
+  left: 100%;                       /* presa na lateral direita da lombada */
+  width: var(--largura-capa);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px 14px 0;
+  border-radius: 2px 6px 6px 2px;
+  background-color: var(--cor, #444);
+  background-image:
+    linear-gradient(90deg, rgba(0,0,0,.28) 0, rgba(0,0,0,0) 14px),
+    linear-gradient(160deg, rgba(255,255,255,.14) 0%, rgba(255,255,255,0) 45%, rgba(0,0,0,.18) 100%);
+  box-shadow: 6px 10px 22px rgba(30, 27, 58, .30);
+  color: #ffffff;
+  text-align: left;
+  transform-origin: left center;    /* a "dobradiça" é a lateral da lombada */
+  transform: rotateY(-90deg);
+  opacity: 0;
+  pointer-events: none;
+  backface-visibility: hidden;
+  transition: transform .38s cubic-bezier(.2, .7, .2, 1), opacity .2s ease;
+}
+/* Livros perto da borda direita abrem a capa para a esquerda (o JS decide) */
+.lombada--capa-esquerda .lombada__capa {
+  left: auto;
+  right: 100%;
+  border-radius: 6px 2px 2px 6px;
+  background-image:
+    linear-gradient(270deg, rgba(0,0,0,.28) 0, rgba(0,0,0,0) 14px),
+    linear-gradient(200deg, rgba(255,255,255,.14) 0%, rgba(255,255,255,0) 45%, rgba(0,0,0,.18) 100%);
+  transform-origin: right center;
+  transform: rotateY(90deg);
+}
+@media (hover: hover) {
+  .lombada:hover .lombada__capa { transform: rotateY(0); opacity: 1; pointer-events: auto; }
+}
+.lombada:focus-visible .lombada__capa,
+.lombada--aberta .lombada__capa { transform: rotateY(0); opacity: 1; pointer-events: auto; }
+
+.capa__nivel {
+  font-family: var(--fonte-mono);
+  font-size: .66rem;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  opacity: .9;
+}
+.capa__titulo {
+  font-family: var(--fonte-titulo);
+  font-size: 1.08rem;
+  font-weight: 800;
+  line-height: 1.15;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, .35);
+  hyphens: auto;
+  overflow-wrap: break-word;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 6;
+  overflow: hidden;
+}
+.capa__subtitulo {
+  font-size: .72rem;
+  line-height: 1.3;
+  opacity: .9;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
+/* Nenhuma parte da capa encolhe: assim nunca aparece uma linha cortada ao meio */
+.lombada__capa > * { flex: none; }
+.lombada__capa { overflow: hidden; }
+.capa__autor {
+  margin-top: auto;     /* autor e dica ficam na base da capa */
+  font-size: .76rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+/* Dica do segundo toque: só aparece quando a capa foi aberta por toque */
+.capa__dica {
+  display: none;
+  font-size: .66rem;
+  opacity: .85;
+}
+.lombada--aberta .capa__dica { display: block; }
+.capa__faixa {
+  height: 10px;
+  margin: 4px -14px 0;
+}
+.lombada--iniciante .capa__faixa { background: var(--iniciante); }
+.lombada--intermediario .capa__faixa { background: var(--intermediario); }
+.lombada--avancado .capa__faixa { background: var(--avancado); }
 
 /* Faixa de nível na base */
 .lombada__nivel {
@@ -625,11 +728,11 @@ a {
   border-left: 1px solid var(--linha);
   background: var(--superficie);
   color: var(--texto);
-  box-shadow: -24px 0 48px rgba(0,0,0,.6);
+  box-shadow: -24px 0 48px rgba(30, 27, 58, .18);
   overflow-y: auto;
 }
 .painel[open] { animation: entrar-lado .22s ease-out; }
-.painel::backdrop { background: rgba(0, 0, 0, .7); }
+.painel::backdrop { background: rgba(30, 27, 58, .45); }
 
 @keyframes entrar-lado {
   from { transform: translateX(40px); opacity: 0; }
@@ -677,7 +780,7 @@ a {
 .painel__titulo {
   margin: 0 40px 4px 0;
   font-family: var(--fonte-titulo);
-  font-weight: 900;
+  font-weight: 800;
   font-size: 1.75rem;
   line-height: 1.1;
   letter-spacing: -.02em;
@@ -728,8 +831,8 @@ a {
   margin-left: 6px;
   padding: 1px 8px;
   border-radius: 999px;
-  background: #2e2a12;
-  color: #f7dc8a;
+  background: #f7e7b5;
+  color: #6b4e00;
   font-family: var(--fonte-mono);
   font-size: .72rem;
   font-weight: 600;
@@ -833,24 +936,40 @@ a {
   .estante { display: none; margin-bottom: 32px; }
   .estante.estante--ativa { display: block; }
 
-  .prateleira { padding: 28px 8px 0; }
-  .prateleira__tabua { margin: 0 -8px; }
-  .prateleira__livros { gap: 3px; min-height: 290px; }
+  .prateleira { padding: 10px 0 0; }
+  .prateleira__tabua { margin: 0; }
 
-  /* 7 lombadas dividem a largura disponível */
-  .prateleira__livros li { flex: 1 1 0; min-width: 0; }
+  /* Com o título na horizontal, as lombadas precisam de largura para ler.
+     Por isso no celular a prateleira rola para o lado (só ela, não a página),
+     parando em cada livro. O espaço em cima é para o livro "sair" ao ser tocado. */
+  .prateleira__livros {
+    gap: 6px;
+    min-height: 300px;
+    padding: 22px 12px 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x proximity;
+    scroll-padding: 0 12px;
+    scrollbar-width: thin;
+  }
+  .prateleira__livros li { flex: none; scroll-snap-align: start; }
   .lombada {
-    width: 100%;
-    max-width: var(--largura);
+    width: calc(var(--largura) * .86);
     height: calc(var(--altura) * .8);
     padding: 8px 2px 0;
   }
   .lombada__degrau { width: 22px; height: 22px; font-size: .74rem; }
-  .lombada__titulo { font-size: .86rem; max-width: 2.3em; } /* 2 colunas no celular */
-  .lombada__autor { font-size: .7rem; }
+  .lombada__titulo { font-size: .76rem; padding: 0 4px; }
+  .lombada--titulo-compacto .lombada__titulo { font-size: .66rem; padding: 0 3px; }
+  .lombada__autor { font-size: .64rem; padding: 0 4px; }
   .lombada__nivel { width: calc(100% + 4px); margin: 0 -2px; }
   .lombada--lido .lombada__fita { right: 4px; width: 10px; }
   .lombada--lido .lombada__check { right: 2px; }
+  .lombada__capa { --largura-capa: 158px; padding: 12px 12px 0; }
+  .capa__titulo { font-size: .98rem; -webkit-line-clamp: 5; }
+  /* Capa estreita no celular: o subtítulo fica só no painel de detalhes */
+  .capa__subtitulo { display: none; }
+  .capa__faixa { margin: 4px -12px 0; }
 
   /* Painel vira gaveta que sobe de baixo */
   .painel {
@@ -860,7 +979,7 @@ a {
     max-height: 88vh;
     border-left: 0;
     border-radius: 20px 20px 0 0;
-    box-shadow: 0 -24px 48px rgba(0,0,0,.6);
+    box-shadow: 0 -24px 48px rgba(30, 27, 58, .18);
   }
   .painel[open] { animation: entrar-baixo .24s ease-out; }
   .painel__caixa { border-radius: 20px 20px 0 0; padding: 24px 16px 28px; }
@@ -874,6 +993,6 @@ a {
 /* Quem prefere menos movimento não vê animações */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .lombada, .progresso__preenchido, .botao { transition: none; }
+  .lombada, .lombada__capa, .progresso__preenchido, .botao { transition: none; }
   .painel[open] { animation: none; }
 }

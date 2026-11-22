@@ -39,6 +39,12 @@
 
     <!-- Chips de tema: preenchidos pelo js/app.js -->
     <nav class="temas" aria-label="Temas">
+      <!-- Pesquisa visual: apaga as lombadas que não batem, sem mexer na estante -->
+      <div class="busca" role="search">
+        <label class="so-leitor" for="busca">Pesquisar livros por título, autor ou palavra-chave</label>
+        <input class="busca__campo" id="busca" type="search" autocomplete="off"
+               placeholder="Pesquisar livro, autor ou palavra-chave">
+      </div>
       <ul class="temas__lista" id="temas"></ul>
     </nav>
   </header>
@@ -82,6 +88,11 @@
 
       <p id="painel-link-area" hidden>
         <a id="painel-link" href="#" target="_blank" rel="noopener"></a>
+      </p>
+
+      <h3>Onde encontrar</h3>
+      <p id="painel-comprar-area">
+        <a class="botao botao--discreto painel__comprar" id="painel-comprar" href="#" target="_blank" rel="noopener">Buscar na Amazon ↗</a>
       </p>
 
       <button class="botao botao--destaque painel__lido" id="painel-lido" type="button" aria-pressed="false"></button>

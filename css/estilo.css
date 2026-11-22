@@ -241,6 +241,30 @@ a {
   backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--linha);
 }
+/* Barra de pesquisa: mesmo formato "pílula" dos chips */
+.busca {
+  display: flex;
+  justify-content: center;
+  max-width: var(--largura-max);
+  margin: 0 auto 10px;
+  padding: 0 16px;
+}
+.busca__campo {
+  width: 100%;
+  max-width: 440px;
+  min-height: 44px;
+  padding: 8px 18px;
+  border-radius: 999px;
+  border: 1px solid var(--linha);
+  background: var(--superficie);
+  color: var(--texto);
+  font: inherit;
+  font-size: 1rem;            /* 16px: o iPhone não dá zoom ao focar */
+}
+.busca__campo::placeholder { color: var(--texto-suave); }
+.busca__campo:hover,
+.busca__campo:focus { border-color: var(--marca); }
+
 .temas__lista {
   display: flex;
   gap: 8px;
@@ -273,6 +297,18 @@ a {
   box-shadow: var(--brilho);
 }
 
+/* Pesquisa: o chip da estante que tem resultado ganha borda verde e um pontinho */
+.chip--achado { border-color: var(--marca); }
+.chip--achado::after {
+  content: "";
+  display: inline-block;
+  width: 7px; height: 7px;
+  margin-left: 8px;
+  border-radius: 50%;
+  background: var(--marca);
+}
+.chip--achado[aria-current="true"]::after { background: var(--texto-sobre-marca); }
+
 /* ---------- 4) Estantes ---------- */
 .estantes {
   max-width: var(--largura-max);
@@ -288,7 +324,7 @@ a {
 
 .estante {
   /* Espaço para o topo grudado não cobrir o título ao pular pelo chip */
-  scroll-margin-top: 80px;
+  scroll-margin-top: 140px;   /* a barra grudada agora inclui a pesquisa */
   margin: 0 0 64px;
 }
 .estante__cabecalho {
@@ -356,6 +392,19 @@ a {
   background: var(--degrade);
   opacity: .8;
 }
+/* Pesquisa: a estante que tem o livro procurado acende (borda e brilho da marca) */
+.prateleira { transition: border-color .25s ease, box-shadow .25s ease; }
+.estante--achada .prateleira {
+  border-color: var(--marca);
+  box-shadow: var(--brilho);
+}
+/* Pesquisa: estante sem nenhum livro encontrado fica escondida (só enquanto pesquisa) */
+.estante--oculta { display: none !important; }
+.estante__achados {
+  color: var(--marca);
+  font-weight: 600;
+}
+
 .prateleira__livros {
   display: flex;
   align-items: flex-end;   /* todos apoiados na tábua */
@@ -401,7 +450,12 @@ a {
   /* Letras mais definidas */
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  transition: transform .18s ease, box-shadow .18s ease;
+  transition: transform .18s ease, box-shadow .18s ease, opacity .25s ease, filter .25s ease;
+}
+/* Pesquisa: o livro que não bate fica escuro e levemente desfocado (continua no lugar) */
+.lombada--apagada {
+  opacity: .4;
+  filter: blur(1.5px) brightness(.6);
 }
 /* Livro "sai" da prateleira ao passar o mouse ou receber foco pelo teclado.
    O hover só vale em aparelhos com mouse: no celular ele ficaria "preso" depois do toque. */
@@ -597,6 +651,8 @@ a {
 }
 .painel h3 + p { margin: 0; color: var(--texto-suave); }
 #painel-link-area { margin: 22px 0 0; }
+
+.painel__comprar { width: 100%; margin-top: 4px; }
 
 .painel__lido { width: 100%; margin-top: 28px; }
 .painel__lido[aria-pressed="true"] {

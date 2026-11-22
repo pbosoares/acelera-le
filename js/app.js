@@ -9,6 +9,7 @@
    3) Carregar os dados
    4) Desenhar chips e estantes
    5) Painel de detalhes
+   5b) Pesquisa visual de livros
    6) Sugerir livro e zerar progresso
    7) Começo de tudo
    ========================================================= */
@@ -20,6 +21,9 @@ const REPOSITORIO = "https://github.com/pbosoares/acelera-le";
 
 // Nome do arquivo do modelo de issue em .github/ISSUE_TEMPLATE/
 const MODELO_SUGESTAO = "sugerir-livro.yml";
+
+// Busca da loja usada no botão "Buscar na Amazon" do painel (sem link de afiliado)
+const LOJA_BUSCA = "https://www.amazon.com.br/s";
 
 // Chave usada no localStorage (formato descrito em docs/tecnologia.md)
 const CHAVE_LIDOS = "acelera-le:lidos";
@@ -185,7 +189,10 @@ function desenharEstantes() {
     const barra = criar("div", "progresso__barra");
     barra.setAttribute("aria-hidden", "true");
     barra.append(criar("div", "progresso__preenchido"));
-    progresso.append(contagem, barra);
+    // "2 encontrados": só aparece durante a pesquisa (ver aplicarBusca)
+    const achados = criar("span", "estante__achados");
+    achados.hidden = true;
+    progresso.append(achados, contagem, barra);
 
     cabecalho.append(textos, progresso);
 
@@ -204,6 +211,9 @@ function desenharEstantes() {
     area.append(secao);
     atualizarProgresso(indice);
   });
+
+  // Se já havia algo digitado na pesquisa, as lombadas novas seguem o filtro
+  aplicarBusca();
 }
 
 // Atualiza o "3/7 lidos" e a barrinha de uma estante
@@ -270,6 +280,15 @@ function textoEdicao(edicao) {
   }
 }
 
+// Busca direcionada na loja: título + primeiro autor, sem inventar URL de produto.
+// Tiramos "2ª ed." do título e o "et al." do autor, que atrapalham a busca.
+function linkBusca(livro) {
+  const titulo = livro.titulo.replace(/,?\s*\d+ª ed\.?/, "");
+  const autor = livro.autores[0].replace(/\s*et al\.?/, "");
+  const parametros = new URLSearchParams({ k: `${titulo} ${autor}`, i: "stripbooks" });
+  return `${LOJA_BUSCA}?${parametros}`;
+}
+
 function abrirPainel(estante, livro, botao) {
   livroAberto = { estante, livro };
   if (botao) lombadaQueAbriu = botao;
@@ -313,6 +332,10 @@ function preencherPainel() {
       ? "Ler gratuitamente no site oficial ↗"
       : "Site oficial ↗";
   }
+
+  // Onde encontrar: busca na loja por título e autor
+  $("painel-comprar").href = linkBusca(livro);
+  $("painel-comprar").setAttribute("aria-label", `Buscar ${livro.titulo} na Amazon (abre em nova aba)`);
 
   const botaoLido = $("painel-lido");
   botaoLido.textContent = lido ? "✓ Lido · desmarcar" : "Marcar como lido";
@@ -392,6 +415,89 @@ let usandoTeclado = false;
 document.addEventListener("keydown", () => { usandoTeclado = true; });
 document.addEventListener("pointerdown", () => { usandoTeclado = false; });
 
+// ---------- 5b) Pesquisa visual de livros ----------
+// Nada sai do lugar: quem não bate com a pesquisa só ganha a classe
+// "lombada--apagada" (escuro + blur). Quem bate fica como sempre, e a estante
+// dele (a mesma do JSON) ganha destaque, junto com o chip do tema.
+
+// Minúsculas e sem acento: "ação" e "ACAO" são o mesmo texto
+function normalizar(texto) {
+  return texto.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+}
+
+// Só campos que existem no JSON: títulos, autores e o "porque" da curadoria
+function textoPesquisavel(livro) {
+  const partes = [livro.titulo, livro.subtitulo, livro.tituloOriginal, ...livro.autores, livro.porque];
+  return normalizar(partes.filter(Boolean).join(" "));
+}
+
+function aplicarBusca() {
+  const campo = $("busca");
+  if (!campo || estantes.length === 0) return;
+
+  // Cada palavra digitada precisa aparecer no livro (ordem não importa)
+  const termos = normalizar(campo.value).split(/\s+/).filter(Boolean);
+  const pesquisando = termos.length > 0;
+  const achadosPorEstante = estantes.map(() => 0);
+
+  estantes.forEach((estante, indice) => {
+    for (const livro of estante.livros) {
+      const bate = pesquisando && termos.every((termo) => textoPesquisavel(livro).includes(termo));
+      document
+        .querySelector(`[data-id="${idDoLivro(estante, livro)}"]`)
+        .classList.toggle("lombada--apagada", pesquisando && !bate);
+      if (bate) achadosPorEstante[indice]++;
+    }
+
+    const n = achadosPorEstante[indice];
+    const secao = $(estante.id);
+    secao.classList.toggle("estante--achada", n > 0);
+
+    const selo = secao.querySelector(".estante__achados");
+    selo.hidden = n === 0;
+    selo.textContent = n === 1 ? "1 encontrado" : `${n} encontrados`;
+
+    const chip = document.querySelector(`.chip[data-indice="${indice}"]`);
+    chip.classList.toggle("chip--achado", n > 0);
+    if (n > 0) chip.setAttribute("aria-label", `${estante.nome}, ${selo.textContent}`);
+    else chip.removeAttribute("aria-label");
+  });
+
+  // No celular só uma estante aparece por vez: se a atual não tem resultado,
+  // vamos para a primeira que tem (os livros continuam nas mesmas estantes).
+  const primeira = achadosPorEstante.findIndex((n) => n > 0);
+  if (pesquisando && CELULAR.matches && primeira >= 0 && achadosPorEstante[estanteAtiva] === 0) {
+    marcarEstanteAtiva(primeira);
+  }
+
+  const total = achadosPorEstante.reduce((soma, n) => soma + n, 0);
+
+  // Com resultados, as estantes sem nenhum livro encontrado ficam escondidas
+  // (e o chip delas também). É só visual: o catálogo e a ordem não mudam.
+  // Sem nenhum resultado, nada é escondido: todos os livros só ficam apagados.
+  estantes.forEach((estante, indice) => {
+    const ocultar = pesquisando && total > 0 && achadosPorEstante[indice] === 0;
+    $(estante.id).classList.toggle("estante--oculta", ocultar);
+    document.querySelector(`.chip[data-indice="${indice}"]`).parentElement.hidden = ocultar;
+  });
+
+  if (!pesquisando) avisar("");
+  else if (total === 0) avisar("Nenhum livro encontrado.");
+  else avisar(total === 1 ? "1 livro encontrado." : `${total} livros encontrados.`);
+}
+
+function prepararBusca() {
+  const campo = $("busca");
+  campo.addEventListener("input", aplicarBusca);
+  // Esc limpa a pesquisa (alguns navegadores já fazem isso sozinhos)
+  campo.addEventListener("keydown", (evento) => {
+    if (evento.key === "Escape" && campo.value) {
+      campo.value = "";
+      aplicarBusca();
+    }
+  });
+}
+
 // ---------- 6) Sugerir livro e zerar progresso ----------
 
 // Monta o link de "nova issue" já com o modelo e a estante preenchidos
@@ -445,6 +551,7 @@ async function iniciar() {
   desenharChips();
   desenharEstantes();
   prepararRodape();
+  prepararBusca();
   acompanharRolagem();
 
   // Se o endereço já tem #java, #python… começa por essa estante

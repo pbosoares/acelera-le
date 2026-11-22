@@ -13,6 +13,7 @@ body:
     attributes:
       label: Estante
       options:
+        - Lógica de Programação
         - Java
         - Python
         - JavaScript / Front-end

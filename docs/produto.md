@@ -7,7 +7,7 @@ Uma **biblioteca**: a página mostra uma prateleira de madeira por tema. Em cada
 ## Página
 
 - **Topo:** logo "Acelera Lê!", subtítulo "A estante de leitura da Acelera Dev" e uma frase curta explicando o roadmap.
-- **Navegação por tema:** chips/abas com os temas (Java, Python, JavaScript / Front-end, IA, Engenharia de Software, Banco de Dados, DevOps, Design System, Carreira). No desktop, todas as prateleiras aparecem empilhadas com rolagem e os chips levam até a prateleira. No celular, uma estante por vez.
+- **Navegação por tema:** chips/abas com os temas (Lógica de Programação, Java, Python, JavaScript / Front-end, IA, Engenharia de Software, Banco de Dados, DevOps, Design System, Carreira). No desktop, todas as prateleiras aparecem empilhadas com rolagem e os chips levam até a prateleira. No celular, uma estante por vez.
 - **Legenda de níveis:** 🟢 Iniciante · 🟡 Intermediário · 🔴 Avançado.
 - **Rodapé:** "Feito para a comunidade Acelera Dev - Autor: Pablo Soares", link do repositório e o botão "Sugerir livro".
 

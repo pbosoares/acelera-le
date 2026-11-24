@@ -440,7 +440,7 @@ a {
 /* Botão "Copiar link" ao lado da descrição da estante */
 .botao-copiar {
   margin-top: 8px;
-  min-height: 32px;
+  min-height: 38px;          /* área de toque confortável no celular */
   padding: 4px 12px;
   border-radius: 999px;
   border: 1px solid var(--linha);
@@ -1066,6 +1066,15 @@ a {
   letter-spacing: .08em;
   text-transform: uppercase;
   color: var(--texto-apagado);
+}
+
+/* ---------- Telas muito grandes (monitores 2K/4K) ----------
+   Tudo que é medido em "rem" cresce um pouco, e o conteúdo fica mais largo,
+   para o site não parecer miúdo no meio de uma tela enorme. */
+@media (min-width: 1800px) {
+  html { font-size: 112.5%; }   /* 1rem = 18px */
+  body { font-size: 1rem; }
+  :root { --largura-max: 1280px; }
 }
 
 /* ---------- 8) Celular ---------- */

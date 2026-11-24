@@ -402,7 +402,10 @@
 @media (max-width: 860px) {
   .e5, .e6, .e7, .e9 { display: none; }
   .e1 { left: 0; top: 70px; }
-  .e2 { right: 0; top: 190px; }
+  /* Tablet em pé e celular deitado: o livro azul sobe para o lado da placa
+     do título, longe do parágrafo, e o ">_" sai para não encostar no texto */
+  .e2 { right: 0; top: 96px; }
+  .e10 { display: none; }
 }
 /* Celular: o texto ocupa a largura toda, então abrimos uma faixa livre
    acima do selo e espalhamos 4 enfeites pequenos nela. */

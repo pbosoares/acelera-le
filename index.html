@@ -23,8 +23,9 @@
   <!-- Fontes (Fraunces, Inter e IBM Plex Mono). Sem internet, o site usa as fontes do sistema. -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,800;1,9..144,800&family=IBM+Plex+Mono:wght@500;600&family=Inter:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,500..900,0..100,0..1;1,9..144,500..900,0..100,0..1&family=IBM+Plex+Mono:wght@500;600&family=Inter:wght@400;500;600;700&display=swap">
   <link rel="stylesheet" href="css/estilo.css">
+  <link rel="stylesheet" href="css/enfeites.css">
   <!-- Ícone da aba: dois livros (terracota e azul-tinta), desenhados em SVG -->
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='6' y='3' width='9' height='26' rx='1.5' fill='%23C8553D'/%3E%3Crect x='17' y='6' width='9' height='23' rx='1.5' fill='%232E4A7D'/%3E%3C/svg%3E">
 </head>
@@ -35,6 +36,31 @@
   <header class="topo">
     <!-- Palavra gigante e vazada no fundo, como no site da Acelera Dev -->
     <span class="topo__fundo" aria-hidden="true">LEITURA</span>
+    <!-- Enfeites flutuantes: livros e objetos de leitura e programação
+         desenhados só com CSS (veja css/enfeites.css). São decoração:
+         aria-hidden esconde de leitores de tela. -->
+    <div class="enfeites" aria-hidden="true">
+      <!-- Livros 3D girando devagar (sem título: são só enfeite) -->
+      <span class="enfeite enfeite--livro3d e1"><span class="caixa3d livro3d" style="--cor:#8E2F25"><span class="face face--frente"></span><span class="face face--tras"></span><span class="face face--esq"></span><span class="face face--dir"></span><span class="face face--topo"></span><span class="face face--base"></span></span></span>
+      <span class="enfeite enfeite--livro3d e2"><span class="caixa3d livro3d" style="--cor:#24406E"><span class="face face--frente"></span><span class="face face--tras"></span><span class="face face--esq"></span><span class="face face--dir"></span><span class="face face--topo"></span><span class="face face--base"></span></span></span>
+      <!-- Livro aberto -->
+      <span class="enfeite enfeite--aberto e3"><span class="pagina"></span><span class="pagina"></span></span>
+      <!-- Óculos de leitura -->
+      <span class="enfeite enfeite--oculos e4"><span class="lente"></span><span class="lente"></span></span>
+      <!-- Xícara de café com vapor -->
+      <span class="enfeite enfeite--cafe e5"><span class="vapor"></span><span class="vapor"></span></span>
+      <!-- Marcador de página -->
+      <span class="enfeite enfeite--marcador e6"></span>
+      <!-- Lápis -->
+      <span class="enfeite enfeite--lapis e7"></span>
+      <!-- Símbolos de programação -->
+      <span class="enfeite enfeite--codigo enfeite--etiqueta e8">&lt;/&gt;</span>
+      <span class="enfeite enfeite--codigo e9">{ }</span>
+      <span class="enfeite enfeite--codigo enfeite--terminal e10">&gt;_</span>
+      <span class="enfeite enfeite--codigo e11">;</span>
+      <!-- Pilha de livros deitados -->
+      <span class="enfeite enfeite--pilha e12"><span></span><span></span><span></span></span>
+    </div>
     <div class="topo__conteudo">
       <p class="selo-marca">Acelera Dev · Roadmaps de leitura</p>
       <h1 class="logo">Acelera <span>Lê!</span></h1>

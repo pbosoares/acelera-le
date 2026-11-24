@@ -16,7 +16,8 @@ Por quê:
 acelera-le/
 ├── index.html
 ├── css/
-│   └── estilo.css
+│   ├── estilo.css
+│   └── enfeites.css       ← objetos flutuando no topo
 ├── js/
 │   └── app.js
 ├── dados/

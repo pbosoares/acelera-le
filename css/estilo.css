@@ -170,9 +170,11 @@ a {
   display: inline-block;
   margin: 0 0 18px;
   padding: 6px 14px;
-  border: 1px solid var(--linha);
+  /* Borda dourada fina, com um segundo filete por dentro, como um rótulo antigo */
+  border: 1px solid #c9a24e;
   border-radius: 999px;
   background: var(--superficie);
+  box-shadow: inset 0 0 0 2px var(--superficie), inset 0 0 0 3px rgba(201, 162, 78, .35);
   font-family: var(--fonte-mono);
   font-size: .75rem;
   font-weight: 600;
@@ -180,23 +182,77 @@ a {
   text-transform: uppercase;
   color: var(--texto-suave);
 }
+/* O título fica numa placa de folha de rosto: papel claro, borda dourada
+   dupla, pontinhos dourados nos cantos e o fleurão embaixo do nome */
 .logo {
-  margin: 0;
+  position: relative;
+  display: inline-block;
+  margin: 4px 0 0;
+  padding: 26px clamp(22px, 5vw, 56px) 20px;
   font-family: var(--fonte-titulo);
   font-weight: 800;
-  font-size: clamp(3rem, 10vw, 5.4rem);
+  font-size: clamp(3rem, 10vw, 5.8rem);
   line-height: 1;
-  letter-spacing: -.02em;
+  letter-spacing: -.03em;
+  color: var(--texto);
+  /* Relevo de impressão: luz embaixo da letra e sombra suave */
+  text-shadow: 0 1px 0 rgba(255, 255, 255, .8), 0 3px 6px rgba(30, 27, 58, .14);
+  border: 1.5px solid #c9a24e;
+  border-radius: 14px;
+  background:
+    /* pontinhos dourados nos 4 cantos */
+    radial-gradient(circle at 14px 14px, #c9a24e 0 2.5px, transparent 3px),
+    radial-gradient(circle at calc(100% - 14px) 14px, #c9a24e 0 2.5px, transparent 3px),
+    radial-gradient(circle at 14px calc(100% - 14px), #c9a24e 0 2.5px, transparent 3px),
+    radial-gradient(circle at calc(100% - 14px) calc(100% - 14px), #c9a24e 0 2.5px, transparent 3px),
+    /* papel: um pouco mais claro no meio, como uma folha */
+    radial-gradient(ellipse at 50% 40%, #fffdf8 0%, #fbf5e8 60%, #f3e9d4 100%);
+  /* filete dourado por dentro (segunda borda) e sombra da placa no fundo */
+  outline: 1px solid rgba(201, 162, 78, .55);
+  outline-offset: -9px;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, .6) inset,
+    0 18px 30px -18px rgba(30, 27, 58, .35),
+    0 4px 10px rgba(30, 27, 58, .06);
 }
-/* "Lê!" em terracota e itálico, como uma assinatura */
+/* "Lê!" em itálico, com degradê de terracota, como tinta sobre o papel
+   (contraste com o fundo: de 3,9:1 a 7,2:1, acima do mínimo para título grande) */
 .logo span {
-  color: var(--marca);
   font-style: italic;
+  letter-spacing: -.01em;
+  padding-right: .06em;      /* o "!" itálico não fica cortado */
+  background: linear-gradient(170deg, #c8553d 0%, #b04632 45%, #8e2f25 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: none;
+  filter: drop-shadow(0 3px 5px rgba(142, 47, 37, .18));
 }
+/* Ornamento de folha de rosto: fleurão dourado entre dois filetes */
+.logo::after {
+  content: "❦";
+  display: block;
+  width: min(260px, 80%);
+  margin: 12px auto 0;
+  font-family: Georgia, "Segoe UI Symbol", serif;
+  font-size: 1.1rem;
+  font-weight: 400;
+  font-style: normal;
+  line-height: 1;
+  letter-spacing: 0;
+  color: #b8913f;
+  text-shadow: none;
+  background:
+    linear-gradient(90deg, rgba(201, 162, 78, 0), #c9a24e) left 50% / calc(50% - 20px) 1px no-repeat,
+    linear-gradient(270deg, rgba(201, 162, 78, 0), #c9a24e) right 50% / calc(50% - 20px) 1px no-repeat;
+}
+/* Subtítulo em itálico serifado, como o subtítulo de um livro */
 .subtitulo {
-  margin: 14px 0 0;
-  font-size: 1.15rem;
-  font-weight: 600;
+  margin: 12px 0 0;
+  font-family: var(--fonte-titulo);
+  font-style: italic;
+  font-size: clamp(1.1rem, 2.6vw, 1.35rem);
+  font-weight: 500;
   color: var(--texto);
 }
 .explicacao {
@@ -365,7 +421,13 @@ a {
 .estante__nome {
   margin: 0;
   font-family: var(--fonte-titulo);
-  font-weight: 800;
+  font-weight: 750;
+  /* Desenho mais refinado do Fraunces: corpo de título (opsz), cantos
+     levemente suavizados (SOFT) e sem as letras "tortas" (WONK 0).
+     Deixa o "J" mais elegante e sem a bolinha pesada. */
+  font-variation-settings: "opsz" 110, "SOFT" 50, "WONK" 0;
+  /* Sem a ligadura "fi" (em "Artificial" ela juntava o f e o i num desenho estranho) */
+  font-variant-ligatures: no-common-ligatures;
   font-size: clamp(1.7rem, 4vw, 2.2rem);
   line-height: 1.1;
   letter-spacing: -.03em;
@@ -426,21 +488,57 @@ a {
 
 /* A prateleira: o nicho da estante, com os livros em pé sobre a tábua de madeira */
 .prateleira {
+  /* Medidas da moldura de madeira (o celular usa colunas mais finas) */
+  --coluna: 18px;            /* espessura das colunas laterais */
+  --topo-madeira: 16px;      /* espessura da tábua de cima */
+  /* Veios de madeira (ruído do SVG esticado): deitados e em pé */
+  --veio-deitado: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='80'%3E%3Cfilter id='v'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.006 0.42' numOctaves='3' seed='7'/%3E%3CfeColorMatrix values='0 0 0 0 0.33 0 0 0 0 0.2 0 0 0 0 0.08 0 0 0 0.9 -0.28'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23v)'/%3E%3C/svg%3E");
+  --veio-em-pe: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='400'%3E%3Cfilter id='v'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.42 0.006' numOctaves='3' seed='3'/%3E%3CfeColorMatrix values='0 0 0 0 0.33 0 0 0 0 0.2 0 0 0 0 0.08 0 0 0 0.9 -0.28'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23v)'/%3E%3C/svg%3E");
   position: relative;
-  padding: 32px 20px 0;
-  border: 1px solid var(--linha);
-  border-radius: var(--raio);
-  background: var(--superficie-2);
-  box-shadow: inset 0 8px 18px rgba(30, 27, 58, .08);
+  padding: 38px calc(var(--coluna) + 18px) 0;
+  border-radius: 8px;
+  /* Camadas, de cima para baixo:
+     1-2) tábua de cima (veios + madeira, com quina clara embaixo)
+     3)   sombra que a tábua de cima faz no fundo
+     4)   emendas verticais do painel de fundo
+     5-6) fundo: veios bem leves sobre o creme */
+  background:
+    var(--veio-deitado) top / 100% var(--topo-madeira) no-repeat,
+    linear-gradient(180deg, #d6b588 0%, #c39e6c 70%, #a8845a 100%) top / 100% var(--topo-madeira) no-repeat,
+    linear-gradient(180deg, rgba(30, 27, 58, .28) 0, rgba(30, 27, 58, .08) 22px, rgba(30, 27, 58, 0) 64px) 0 var(--topo-madeira) / 100% 64px no-repeat,
+    repeating-linear-gradient(90deg, rgba(100, 72, 40, .08) 0 1px, transparent 1px 86px),
+    linear-gradient(180deg, rgba(120, 90, 50, .06), rgba(120, 90, 50, 0) 70%),
+    #ece2cd;
+  /* Sombras de profundidade nos cantos (ao lado das colunas) e a sombra
+     do móvel na parede */
+  box-shadow:
+    inset calc(var(--coluna) + 14px) 0 16px -12px rgba(30, 27, 58, .28),
+    inset calc((var(--coluna) + 14px) * -1) 0 16px -12px rgba(30, 27, 58, .28),
+    0 22px 30px -18px rgba(30, 27, 58, .5),
+    0 2px 0 rgba(30, 27, 58, .08);
   overflow: hidden;
 }
-.prateleira::before { content: none; }
-/* Pesquisa: a estante que tem o livro procurado acende (borda e brilho da marca) */
-.prateleira { transition: border-color .25s ease, box-shadow .25s ease; }
-.estante--achada .prateleira {
-  border-color: var(--marca);
-  box-shadow: var(--brilho);
+/* As colunas laterais: madeira em pé, com volume (claro no meio, escuro nas
+   bordas). Ficam por cima dos livros: no celular eles passam por trás. */
+.prateleira::before,
+.prateleira::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 3;
+  width: var(--coluna);
+  background:
+    var(--veio-em-pe) center / 100% 100%,
+    linear-gradient(90deg, #9c7646 0%, #c9a678 35%, #bf9a68 65%, #8f6c40 100%);
+  pointer-events: none;
 }
+.prateleira::before { left: 0; border-radius: 8px 0 0 8px; }
+.prateleira::after  { right: 0; border-radius: 0 8px 8px 0; }
+/* Pesquisa: a estante que tem o livro procurado ganha um contorno terracota
+   (contorno em vez de sombra, para não apagar a moldura de madeira) */
+.prateleira { outline: 3px solid transparent; outline-offset: 4px; transition: outline-color .25s ease; }
+.estante--achada .prateleira { outline-color: var(--marca); }
 /* Pesquisa: estante sem nenhum livro encontrado fica escondida (só enquanto pesquisa) */
 .estante--oculta { display: none !important; }
 .estante__achados {
@@ -458,15 +556,37 @@ a {
   min-height: 350px;
 }
 .prateleira__livros li { display: flex; position: relative; }
+/* Sombrinha embaixo de cada livro: parece apoiado na tábua */
+.prateleira__livros li::after {
+  content: "";
+  position: absolute;
+  left: 4%;
+  right: 4%;
+  bottom: -4px;
+  height: 12px;
+  background: radial-gradient(closest-side, rgba(30, 27, 58, .5), rgba(30, 27, 58, 0));
+  pointer-events: none;
+}
 
 /* A tábua: madeira clara, como uma estante de verdade */
+/* A tábua de baixo: tampo claro em cima, frente com veios e a borda escura.
+   Vai de uma coluna até a outra. */
 .prateleira__tabua {
-  height: 18px;
-  margin: 0 -20px;
+  position: relative;
+  z-index: 2;              /* fica na frente da sombrinha dos livros */
+  height: 26px;
+  margin: 0 -18px;
+  /* Tampo (faixa clara de cima, vista um pouco de cima), quina com brilho,
+     frente com veios e a borda escura embaixo */
   background:
-    repeating-linear-gradient(92deg, rgba(0,0,0,.04) 0 3px, transparent 3px 12px),
-    linear-gradient(180deg, #d9bb8f 0%, #c39e6c 55%, #a8845a 100%);
-  box-shadow: 0 6px 12px rgba(30, 27, 58, .18);
+    var(--veio-deitado) 0 7px / 100% 100% no-repeat,
+    linear-gradient(180deg,
+      #e9d2aa 0, #dcbf92 6px,           /* tampo */
+      #f1dcb6 6px, #f1dcb6 7px,         /* quina com brilho */
+      #c9a678 7px, #b48f5f 80%, #9c7848 100%);
+  box-shadow:
+    0 3px 0 #85663f,                          /* borda da frente */
+    0 14px 18px -8px rgba(30, 27, 58, .38);   /* sombra no fundo */
 }
 
 /* ---------- 5) Lombadas ---------- */
@@ -482,20 +602,30 @@ a {
   height: var(--altura);
   padding: 10px 4px 0;
   border: 0;
-  border-radius: 4px 4px 1px 1px;
+  border-radius: 5px 5px 2px 2px;   /* cabeceira arredondada, como a de um livro */
   background-color: var(--cor, #444);
   /* Sombra nas bordas para dar volume de livro */
   background-image:
-    linear-gradient(90deg, rgba(0,0,0,.30) 0%, rgba(255,255,255,.05) 12%, rgba(255,255,255,0) 28%, rgba(0,0,0,0) 80%, rgba(0,0,0,.25) 100%);
+    /* Filetes dourados em cima e embaixo, como nos livros de capa dura */
+    linear-gradient(180deg, transparent 5px, rgba(255, 233, 180, .7) 5px 6.5px, transparent 6.5px 8.5px, rgba(255, 233, 180, .7) 8.5px 10px, transparent 10px),
+    linear-gradient(0deg, transparent 12px, rgba(255, 233, 180, .7) 12px 13.5px, transparent 13.5px 15.5px, rgba(255, 233, 180, .7) 15.5px 17px, transparent 17px),
+    /* Textura de tecido (trama fina em diagonal), como capa dura encapada */
+    repeating-linear-gradient(45deg, rgba(255, 255, 255, .035) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(-45deg, rgba(0, 0, 0, .05) 0 1px, transparent 1px 3px),
+    /* Lombada arredondada: escura nas bordas, com brilho perto da esquerda */
+    linear-gradient(90deg, rgba(0,0,0,.45) 0%, rgba(0,0,0,.1) 7%, rgba(255,255,255,.16) 20%, rgba(255,255,255,.05) 34%, rgba(0,0,0,0) 58%, rgba(0,0,0,.16) 86%, rgba(0,0,0,.42) 100%);
   color: #ffffff;
   font: inherit;
   cursor: pointer;
-  box-shadow: 2px 0 0 rgba(30, 27, 58, .25);
+  box-shadow:
+    2px 0 0 rgba(30, 27, 58, .22),     /* fresta escura entre um livro e outro */
+    0 2px 4px rgba(30, 27, 58, .2);
   /* Letras mais definidas */
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   /* Profundidade para a capa abrir em 3D */
   perspective: 900px;
+  z-index: 1;              /* na frente da sombrinha embaixo do livro */
   transition: transform .18s ease, box-shadow .18s ease, opacity .25s ease, filter .25s ease;
 }
 /* Pesquisa: o livro que não bate fica escuro e levemente desfocado (continua no lugar) */
@@ -520,6 +650,20 @@ a {
 }
 .lombada:focus-visible { outline-offset: 2px; }
 
+/* Beirada das folhas aparecendo no topo do livro (vista um pouco de cima) */
+.lombada::before {
+  content: "";
+  position: absolute;
+  top: -4px;
+  left: 4px;
+  right: 4px;
+  height: 5px;
+  border-radius: 3px 3px 0 0;
+  background: repeating-linear-gradient(90deg, #faf3e3 0 2px, #e2d4b8 2px 3px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .6);
+  pointer-events: none;
+}
+
 /* Selo com o número do degrau */
 .lombada__degrau {
   display: grid;
@@ -539,7 +683,11 @@ a {
 .lombada__titulo {
   width: 100%;
   margin-top: 12px;
-  padding: 0 6px;
+  padding: 6px 6px;
+  /* Etiqueta: faixa um pouco mais escura com filetes dourados em cima e embaixo */
+  background: rgba(0, 0, 0, .16);
+  border-top: 1px solid rgba(255, 233, 180, .55);
+  border-bottom: 1px solid rgba(255, 233, 180, .55);
   font-family: var(--fonte);
   font-size: .82rem;
   font-weight: 700;
@@ -553,11 +701,11 @@ a {
   -webkit-line-clamp: 7;
   overflow: hidden;
 }
-.lombada--titulo-compacto .lombada__titulo { font-size: .72rem; padding: 0 4px; }
+.lombada--titulo-compacto .lombada__titulo { font-size: .72rem; padding: 6px 4px; }
 /* Autor embaixo, também na horizontal (até 2 linhas) */
 .lombada__autor {
   width: 100%;
-  margin: auto 0 10px;   /* "auto" empurra o autor para a base da lombada */
+  margin: auto 0 22px;   /* "auto" empurra o autor para a base (acima dos filetes) */
   padding: 0 6px;
   font-size: .68rem;
   font-weight: 600;
@@ -780,7 +928,13 @@ a {
 .painel__titulo {
   margin: 0 40px 4px 0;
   font-family: var(--fonte-titulo);
-  font-weight: 800;
+  font-weight: 750;
+  /* Desenho mais refinado do Fraunces: corpo de título (opsz), cantos
+     levemente suavizados (SOFT) e sem as letras "tortas" (WONK 0).
+     Deixa o "J" mais elegante e sem a bolinha pesada. */
+  font-variation-settings: "opsz" 110, "SOFT" 50, "WONK" 0;
+  /* Sem a ligadura "fi" (em "Artificial" ela juntava o f e o i num desenho estranho) */
+  font-variant-ligatures: no-common-ligatures;
   font-size: 1.75rem;
   line-height: 1.1;
   letter-spacing: -.02em;
@@ -936,7 +1090,7 @@ a {
   .estante { display: none; margin-bottom: 32px; }
   .estante.estante--ativa { display: block; }
 
-  .prateleira { padding: 10px 0 0; }
+  .prateleira { --coluna: 12px; --topo-madeira: 12px; padding: 12px 0 0; }
   .prateleira__tabua { margin: 0; }
 
   /* Com o título na horizontal, as lombadas precisam de largura para ler.
@@ -945,7 +1099,7 @@ a {
   .prateleira__livros {
     gap: 6px;
     min-height: 300px;
-    padding: 22px 12px 0;
+    padding: 22px 18px 0;    /* espaço para as colunas de madeira */
     overflow-x: auto;
     overflow-y: hidden;
     scroll-snap-type: x proximity;
@@ -959,8 +1113,8 @@ a {
     padding: 8px 2px 0;
   }
   .lombada__degrau { width: 22px; height: 22px; font-size: .74rem; }
-  .lombada__titulo { font-size: .76rem; padding: 0 4px; }
-  .lombada--titulo-compacto .lombada__titulo { font-size: .66rem; padding: 0 3px; }
+  .lombada__titulo { font-size: .76rem; padding: 5px 4px; }
+  .lombada--titulo-compacto .lombada__titulo { font-size: .66rem; padding: 5px 3px; }
   .lombada__autor { font-size: .64rem; padding: 0 4px; }
   .lombada__nivel { width: calc(100% + 4px); margin: 0 -2px; }
   .lombada--lido .lombada__fita { right: 4px; width: 10px; }

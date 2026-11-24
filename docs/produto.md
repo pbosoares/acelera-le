@@ -15,9 +15,27 @@ Identidade própria, diferente do site da Acelera Dev: fundo creme de papel `#F6
 - **Legenda de níveis:** 🟢 Iniciante · 🟡 Intermediário · 🔴 Avançado.
 - **Rodapé:** "Feito para a comunidade Acelera Dev - Autor: Pablo Soares" e os contribuidores (Lucas Bizoni), link do repositório e o botão "Sugerir livro".
 
+## Título
+
+Acabamento de folha de rosto de livro: o nome fica numa placa de papel claro com borda dourada dupla e pontinhos dourados nos cantos. "Acelera" em tinta com leve relevo de impressão, "Lê!" em itálico com degradê de terracota, um fleurão dourado (❦) entre dois filetes logo abaixo, subtítulo em Fraunces itálico e selo "Acelera Dev · Roadmaps de leitura" com borda dourada dupla.
+
+## Enfeites do topo
+
+Objetos de leitura e programação flutuando em volta do título, desenhados só com CSS (`css/enfeites.css`), sem imagens: dois livros 3D girando devagar, livro aberto, óculos de leitura, xícara de café com vapor, marcador de página, lápis, pilha de livros e os símbolos `</>`, `{ }`, `>_` e `;`.
+
+- Ficam nas laterais e nunca passam por trás do texto (contraste continua AA).
+- São decoração: `aria-hidden` e sem cliques.
+- Telas médias mostram menos enfeites; no celular, 4 pequenos numa faixa acima do selo.
+- Com "reduzir movimento", tudo fica parado.
+
+## Prateleira
+
+Cada estante é um móvel de madeira: tábua em cima, colunas laterais, painel de fundo com veios e uma tábua grossa embaixo (tampo claro e borda escura). Cada livro tem uma sombrinha embaixo, como se estivesse apoiado. Na pesquisa, a estante com resultado ganha um contorno terracota.
+
 ## Lombada (cada livro)
 
 - Retângulo vertical, com altura e largura levemente diferentes entre os livros, para parecer uma estante real.
+- Filetes dourados em cima e embaixo, como nos livros de capa dura.
 - Cor de fundo própria por livro (paleta definida no JSON).
 - **Título na horizontal**, quebrando em várias linhas para ler sem virar a cabeça, e autor em letra menor na base.
 - **Capa 3D**: ao passar o mouse (ou focar pelo teclado) a capa abre como uma porta presa na lombada, mostrando nível, título, subtítulo e autor. No celular, o 1º toque abre a capa e o 2º abre os detalhes. A capa é desenhada em CSS (sem imagem de capa real).
